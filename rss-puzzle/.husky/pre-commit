@@ -1,0 +1,3 @@
+cd rss-puzzle
+npx prettier . --check
+npm run lint
