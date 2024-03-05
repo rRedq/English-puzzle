@@ -3,7 +3,13 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['airbnb', 'plugin:prettier/recommended', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'airbnb-base',
+    'airbnb-typescript/base',
+    'plugin:prettier/recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   overrides: [
     {
       env: {
@@ -19,8 +25,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'import', 'prettier'],
   rules: {
     'prettier/prettier': [
       'error',
@@ -29,5 +36,6 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-var-requires': 0,
+    'no-console': 0,
   },
 };

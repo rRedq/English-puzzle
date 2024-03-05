@@ -8,7 +8,9 @@
     "build": "webpack --config ./webpack.config.js --env mode=prod",
     "lint": "eslint . --ext .ts",
     "watch": "webpack serve --open --config ./webpack.config.js --env mode=dev",
-    "prepare": "cd .. && husky rss-puzzle/.husky && husky install"
+    "prepare": "cd .. && husky rss-puzzle/.husky && husky install",
+    "check": "prettier . --check",
+    "fix": "prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-airbnb": "^0.0.1-security",
     "eslint-plugin-import": "^2.25.2",
@@ -43,11 +46,13 @@
     "lint": "^0.8.19",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
+    "sass": "^1.71.1",
+    "sass-loader": "^14.1.1",
     "style-loader": "^3.3.4",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "validate-branch-name": "^1.3.0",
-    "webpack": "^5.90.1",
+    "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.0",
     "webpack-merge": "^5.10.0"
