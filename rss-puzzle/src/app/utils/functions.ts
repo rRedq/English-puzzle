@@ -19,11 +19,23 @@ function setStorage(id: string, value: string[]): void {
 
 function getStorage(id: string): string[] {
   checkId(id);
-  const storage = isNull(localStorage.getItem('rredq'));
-  let result = new Map<string, string[]>(JSON.parse(storage)).get(id);
-  if (!result) result = [];
+  const storage = localStorage.getItem('rredq');
+  if (!storage) return [];
+  const result = new Map<string, string[]>(JSON.parse(storage)).get(id);
+  if (!result) return [];
 
   return result;
 }
 
-export { isNull, setStorage, getStorage };
+function deleteStorageKey(id: string): boolean {
+  checkId(id);
+  const storage = localStorage.getItem('rredq');
+  if (!storage) return false;
+  const result = new Map<string, string[]>(JSON.parse(storage));
+  if (!result || !result.get(id)) return false;
+  result.delete(id);
+  localStorage.setItem('rredq', JSON.stringify([...result]));
+  return true;
+}
+
+export { isNull, setStorage, getStorage, deleteStorageKey };

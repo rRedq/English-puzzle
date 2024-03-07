@@ -46,4 +46,16 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
   public removeClass(str: string): void {
     this.node.classList.remove(str);
   }
+
+  public removeChildren(): void {
+    this.children.forEach((child) => {
+      child.removeNode();
+    });
+    this.children.length = 0;
+  }
+
+  public removeNode(): void {
+    this.removeChildren();
+    this.getNode().remove();
+  }
 }
