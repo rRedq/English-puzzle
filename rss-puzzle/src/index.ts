@@ -1,1 +1,2 @@
-import './global.css';
+import './app/app';
+import './global.scss';
