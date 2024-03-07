@@ -18,4 +18,8 @@ const form = (props: TagsProps, ...children: ElementOrNull[]) =>
 
 const button = (props: TagsProps) => new CreateElement<HTMLButtonElement>({ ...props, tag: 'button' });
 
-export { label, input, div, span, form, button };
+const h2 = (props: TagsProps) => new CreateElement<HTMLHeadingElement>({ ...props, tag: 'h2' });
+
+const p = (props: TagsProps) => new CreateElement<HTMLParagraphElement>({ ...props, tag: 'p' });
+
+export { label, input, div, span, form, button, h2, p };
