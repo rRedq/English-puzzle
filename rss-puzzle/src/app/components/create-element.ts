@@ -1,6 +1,6 @@
 import { type ElementProps } from '../types/interfaces';
 import type ElementOrNull from '../types/types';
-import isNull from '../utils/functions';
+import { isNull } from '../utils/functions';
 
 export default class CreateElement<T extends HTMLElement = HTMLElement> {
   private node: T;
@@ -29,5 +29,21 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     children.forEach((child) => {
       this.elementAppend(isNull(child));
     });
+  }
+
+  public addEventListener(text: keyof HTMLElementEventMap, handler: (e: Event) => void): void {
+    this.node.addEventListener(text, handler);
+  }
+
+  public textContent(content: string): void {
+    this.node.textContent = content;
+  }
+
+  public addClass(str: string): void {
+    this.node.classList.add(str);
+  }
+
+  public removeClass(str: string): void {
+    this.node.classList.remove(str);
   }
 }

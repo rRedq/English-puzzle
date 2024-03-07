@@ -13,8 +13,8 @@ export default class Login extends CreateElement {
   constructor(elem: CreateElement) {
     super({ tag: 'form', className: 'login' });
     elem.elementAppend(this);
-    this.firstField = new LoginInput('First name');
-    this.secondField = new LoginInput('Surname');
+    this.firstField = new LoginInput('First name', /^(?=.{3,60}$)[A-Z][\\-a-zA-z]+$/, 'incorrect First name');
+    this.secondField = new LoginInput('Surname', /^(?=.{4,60}$)[A-Z][\\-a-zA-z]+$/, 'incorrect Surname');
     this.button = input({
       className: 'login__btn',
       value: 'Login',
@@ -22,11 +22,12 @@ export default class Login extends CreateElement {
     });
   }
 
-  public createLogin() {
+  public createLogin(): void {
     this.appendChildren([this.firstField, this.secondField, this.button]);
-    console.log(this.firstField.getNode());
+    this.button.addEventListener('click', this.accessCheck.bind(this));
+  }
+
+  private accessCheck(e: Event): void {
+    if (!(this.firstField.getAccess() && this.secondField.getAccess())) e.preventDefault();
   }
 }
-
-// const LoginPage = new Login();
-// export default LoginPage;

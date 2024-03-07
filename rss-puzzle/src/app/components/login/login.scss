@@ -5,6 +5,7 @@
   align-items: center;
   margin: auto;
   font-size: 22px;
+  font-weight: 700;
 
   &__field {
     height: 110px;
@@ -49,5 +50,11 @@
       outline: 2px solid transparent;
       outline-offset: 2px;
     }
+  }
+  .success {
+    color: var(--green);
+  }
+  .fail {
+    color: var(--red);
   }
 }
