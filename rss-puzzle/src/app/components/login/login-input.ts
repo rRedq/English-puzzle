@@ -15,6 +15,8 @@ export default class LoginInput extends CreateElement {
 
   private errorMsg: string;
 
+  private value: string = '';
+
   constructor(text: string, regex: RegExp, errorMsg: string) {
     super({ tag: 'div', className: 'login__field' });
     this.regex = regex;
@@ -33,6 +35,7 @@ export default class LoginInput extends CreateElement {
 
   private handler(e: Event): void {
     const target = isNull(e.target as HTMLInputElement);
+    this.value = target.value;
     const str = this.regex.test(target.value) ? 'Everything all right' : `${this.errorMsg}`;
     if (this.regex.test(target.value)) {
       this.spanName.removeClass('fail');
@@ -48,5 +51,9 @@ export default class LoginInput extends CreateElement {
 
   public getAccess(): boolean {
     return this.access;
+  }
+
+  public getValue(): string {
+    return this.value;
   }
 }

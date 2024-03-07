@@ -1,6 +1,7 @@
 import CreateElement from '../create-element';
 import { input } from '../../utils/tag-functions';
 import LoginInput from './login-input';
+import { setStorage } from '../../utils/functions';
 import './login.scss';
 
 export default class Login extends CreateElement {
@@ -28,6 +29,8 @@ export default class Login extends CreateElement {
   }
 
   private accessCheck(e: Event): void {
-    if (!(this.firstField.getAccess() && this.secondField.getAccess())) e.preventDefault();
+    e.preventDefault();
+    if (this.firstField.getAccess() && this.secondField.getAccess())
+      setStorage('access', [this.firstField.getValue(), this.secondField.getValue()]);
   }
 }
