@@ -31,10 +31,13 @@
   &__greet {
     font-size: 30px;
     font-weight: bold;
+    text-align: center;
   }
 
   &__btn {
     @extend %btn;
-    width: 150px;
+    background-color: var(--new);
+    padding: 0.9rem 1.3rem;
+    width: 170px;
   }
 }

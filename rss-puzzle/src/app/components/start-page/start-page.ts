@@ -37,6 +37,7 @@ export default class StartPage extends CreateElement {
   }
 
   private startGame(): void {
+    this.button.removeEventListener('click', this.startGame);
     this.removeNode();
   }
 }

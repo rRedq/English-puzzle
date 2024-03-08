@@ -35,6 +35,10 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     this.node.addEventListener(text, handler);
   }
 
+  public removeEventListener(text: keyof HTMLElementEventMap, handler: (e: Event) => void): void {
+    this.node.removeEventListener(text, handler);
+  }
+
   public textContent(content: string): void {
     this.node.textContent = content;
   }
