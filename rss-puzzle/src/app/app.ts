@@ -17,7 +17,6 @@ export default class App extends CreateElement {
   }
 
   public appStart() {
-    // this.removeChildren();
     this.removeChildren();
     if (getStorage('access').length > 0) {
       this.startPage();

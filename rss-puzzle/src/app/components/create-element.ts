@@ -39,12 +39,14 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     this.node.textContent = content;
   }
 
-  public addClass(str: string): void {
+  public addClass(str: string): CreateElement {
     this.node.classList.add(str);
+    return this;
   }
 
-  public removeClass(str: string): void {
+  public removeClass(str: string): CreateElement {
     this.node.classList.remove(str);
+    return this;
   }
 
   public removeChildren(): void {

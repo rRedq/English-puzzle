@@ -5,9 +5,9 @@ import { isNull } from '../../utils/functions';
 export default class LoginInput extends CreateElement {
   private labelName: CreateElement;
 
-  private inputName: CreateElement;
+  private inputName: CreateElement = input({ type: 'text', className: 'login__input', required: 'required' });
 
-  private spanName: CreateElement;
+  private spanName: CreateElement = span({ className: 'login__span' });
 
   private access: boolean = false;
 
@@ -22,10 +22,6 @@ export default class LoginInput extends CreateElement {
     this.regex = regex;
     this.errorMsg = errorMsg;
     this.labelName = label({ className: 'login__label', textContent: `${text}` });
-    this.inputName = input({ type: 'text', className: 'login__input', required: 'required' });
-    this.spanName = span({ className: 'login__span' });
-    this.elementAppend(this.labelName);
-    this.createInput();
   }
 
   public createInput(): void {
@@ -38,12 +34,10 @@ export default class LoginInput extends CreateElement {
     this.value = target.value;
     const str = this.regex.test(target.value) ? 'Everything all right' : `${this.errorMsg}`;
     if (this.regex.test(target.value)) {
-      this.spanName.removeClass('fail');
-      this.spanName.addClass('success');
+      this.spanName.removeClass('fail').addClass('success');
       this.access = true;
     } else {
-      this.spanName.removeClass('success');
-      this.spanName.addClass('fail');
+      this.spanName.removeClass('success').addClass('fail');
       this.access = false;
     }
     this.spanName.textContent(str);
