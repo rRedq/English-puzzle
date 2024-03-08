@@ -28,6 +28,11 @@
     font-size: 55px;
   }
 
+  &__greet {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
   &__btn {
     @extend %btn;
     width: 150px;

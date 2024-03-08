@@ -26,7 +26,6 @@ export default class App extends CreateElement {
   }
 
   public startPage(): void {
-    this.elementAppend(this.header.startHeader());
-    this.elementAppend(this.startSreen.createStartPage());
+    this.appendChildren([this.header.startHeader(), this.startSreen.createStartPage()]);
   }
 }
