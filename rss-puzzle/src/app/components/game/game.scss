@@ -24,7 +24,12 @@
   }
 
   &__main-field {
-    height: 500px;
+    min-height: 640px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   &__puzzle-field {
@@ -32,34 +37,45 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    padding: 0 20px;
     gap: 15px;
   }
 
+  &__cover {
+    box-sizing: border-box;
+    min-width: 70px;
+    min-height: 40px;
+    border-radius: 5px;
+    flex-grow: 1;
+  }
+
   &__main-field-row {
-    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
   }
-
-  &__cover {
-    box-sizing: border-box;
-    min-width: 55px;
-    min-height: 40px;
-    border-radius: 5px;
+  &__item-store {
+    flex-grow: 1;
   }
-
   &__item,
-  &__item-row {
+  &__item-row,
+  &__item-store {
     padding: 10px 20px;
     border-radius: 5px;
     border: 3px solid var(--blue);
     text-align: center;
-
+  }
+  &__item,
+  &__item-row {
     &:hover {
       cursor: pointer;
     }
+  }
+
+  &__countinue-btn {
+    @extend %btn;
   }
 
   .empty {

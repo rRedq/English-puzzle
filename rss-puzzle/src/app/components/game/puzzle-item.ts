@@ -1,12 +1,14 @@
 import CreateElement from '../create-element';
-import type Game from './game';
+import type ActiveGame from './active-game';
 
-export default class GameItem extends CreateElement {
-  private elem: Game;
+export default class PuzzleItem extends CreateElement {
+  private static nodes: PuzzleItem[] = [];
+
+  private elem: ActiveGame;
 
   private message: string;
 
-  constructor(elem: Game, message: string) {
+  constructor(elem: ActiveGame, message: string) {
     super({
       tag: 'div',
       className: 'game__item',
@@ -17,10 +19,15 @@ export default class GameItem extends CreateElement {
     });
     this.elem = elem;
     this.message = message;
+    PuzzleItem.nodes.push(this);
   }
 
   private onClickItem(): void {
     this.removeNode();
     this.elem.changeToMainField(this.message);
+  }
+
+  public static removeAllItems() {
+    PuzzleItem.nodes.length = 0;
   }
 }

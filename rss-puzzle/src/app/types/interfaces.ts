@@ -42,4 +42,9 @@ interface DataJson {
   roundsCount: number;
 }
 
-export { InputProps, TagsProps, ElementProps, DataJson };
+interface CurrentWord {
+  round: number;
+  word: number;
+}
+
+export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord };
