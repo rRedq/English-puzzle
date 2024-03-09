@@ -78,6 +78,19 @@
     @extend %btn;
   }
 
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .wrong {
+    border: 3px solid var(--red);
+  }
+  .success {
+    border: 3px solid var(--green);
+  }
+
   .empty {
     border: 3px dotted var(--blue);
     min-width: 55px;

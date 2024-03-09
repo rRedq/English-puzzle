@@ -2,6 +2,7 @@ import CreateElement from '../create-element';
 import PuzzleItem from './puzzle-item';
 import RowItem from './row-item';
 import { div } from '../../utils/tag-functions';
+import type Game from './game';
 
 export default class ActiveGame extends CreateElement {
   private main: CreateElement;
@@ -12,9 +13,12 @@ export default class ActiveGame extends CreateElement {
 
   private puzzle: CreateElement;
 
-  constructor(main: CreateElement, str: string, puzzleField: CreateElement) {
+  private root: Game;
+
+  constructor(main: CreateElement, str: string, puzzleField: CreateElement, root: Game) {
     super({ tag: 'div', className: 'game__main-field-row' });
     this.main = main;
+    this.root = root;
     main.elementAppend(this);
     this.currentString = str;
     this.puzzle = puzzleField;
@@ -38,12 +42,17 @@ export default class ActiveGame extends CreateElement {
     });
   }
 
+  public rowItemLengthCheck(isNull: boolean) {
+    this.root.setVisibleCheckBtn(isNull);
+  }
+
   public changeToMainField(message: string): void {
     const elem = new RowItem(this, message);
     this.elementAppend(elem);
   }
 
   public changeToPuzzleField(message: string): void {
+    this.root.setVisibleCheckBtn(false);
     for (let i = 0; i < this.puzzleArray.length; i += 1) {
       if (!this.puzzleArray[i].hasChildNodes()) {
         this.puzzleArray[i].elementAppend(new PuzzleItem(this, message));

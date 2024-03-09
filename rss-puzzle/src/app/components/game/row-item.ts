@@ -6,6 +6,8 @@ export default class RowItem extends CreateElement {
 
   private static index = 0;
 
+  private static isCheck = false;
+
   private id: number;
 
   private message: string;
@@ -26,15 +28,19 @@ export default class RowItem extends CreateElement {
     RowItem.nodes.push(this);
   }
 
-  private removeItem() {
-    const index = RowItem.nodes.findIndex((instance) => instance.id === this.id);
-    RowItem.nodes.splice(index, 1);
-    this.removeNode();
+  private static returnNormalBorder() {
+    RowItem.nodes.forEach((node) => {
+      node.removeClass('wrong').removeClass('success');
+    });
   }
 
-  public static removeAllItems() {
-    RowItem.nodes.length = 0;
-    RowItem.index = 0;
+  public static checkMessage(message: string) {
+    const messageArray = message.split(' ');
+    RowItem.isCheck = true;
+    for (let i = 0; i < RowItem.nodes.length; i += 1) {
+      if (RowItem.nodes[i].message !== messageArray[i]) RowItem.nodes[i].addClass('wrong');
+      else RowItem.nodes[i].addClass('success');
+    }
   }
 
   public static returnWord(): string {
@@ -43,5 +49,20 @@ export default class RowItem extends CreateElement {
       result.push(item.message);
     });
     return result.join(' ');
+  }
+
+  private removeItem() {
+    const index = RowItem.nodes.findIndex((instance) => instance.id === this.id);
+    RowItem.nodes.splice(index, 1);
+    if (RowItem.isCheck) {
+      RowItem.isCheck = true;
+      RowItem.returnNormalBorder();
+    }
+    this.removeNode();
+  }
+
+  public static removeAllItems() {
+    RowItem.nodes.length = 0;
+    RowItem.index = 0;
   }
 }

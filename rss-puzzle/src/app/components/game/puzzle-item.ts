@@ -23,6 +23,10 @@ export default class PuzzleItem extends CreateElement {
   }
 
   private onClickItem(): void {
+    const index = PuzzleItem.nodes.findIndex((instance) => instance.message === this.message);
+    PuzzleItem.nodes.splice(index, 1);
+    const isNull = PuzzleItem.nodes.length === 0;
+    this.elem.rowItemLengthCheck(isNull);
     this.removeNode();
     this.elem.changeToMainField(this.message);
   }
