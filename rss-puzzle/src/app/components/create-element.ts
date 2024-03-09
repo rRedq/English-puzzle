@@ -39,6 +39,10 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     this.node.removeEventListener(text, handler);
   }
 
+  public hasChildNodes(): boolean {
+    return this.node.hasChildNodes();
+  }
+
   public setProperty(prop: keyof CSSStyleDeclaration, value: string): void {
     const formatedProp = (prop as string).replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
     this.getNode().style.setProperty(formatedProp, value);

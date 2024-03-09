@@ -45,6 +45,9 @@
 
   &__cover {
     box-sizing: border-box;
+    min-width: 55px;
+    min-height: 40px;
+    border-radius: 5px;
   }
 
   &__item,
