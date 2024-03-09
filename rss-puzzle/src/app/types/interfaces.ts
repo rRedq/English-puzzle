@@ -1,12 +1,12 @@
 interface ElementProps {
   tag: keyof HTMLElementTagNameMap;
   className?: string;
-  text?: string;
+  textContent?: string;
+  onclick?: (e: Event) => void;
 }
 
 interface TagsProps extends Omit<ElementProps, 'tag'> {
   type?: string;
-  textContent?: string;
 }
 
 interface InputProps extends TagsProps {
@@ -14,4 +14,32 @@ interface InputProps extends TagsProps {
   value?: string;
 }
 
-export { InputProps, TagsProps, ElementProps };
+interface Word {
+  audioExample: string;
+  textExample: string;
+  textExampleTranslate: string;
+  id: number;
+  word: string;
+  wordTranslate: string;
+}
+
+interface LevelData {
+  id: string;
+  name: string;
+  imageSrc: string;
+  cutSrc: string;
+  author: string;
+  year: string;
+}
+
+interface Round {
+  levelData: LevelData;
+  words: Word[];
+}
+
+interface DataJson {
+  rounds: Round[];
+  roundsCount: number;
+}
+
+export { InputProps, TagsProps, ElementProps, DataJson };

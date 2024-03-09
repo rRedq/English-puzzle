@@ -32,12 +32,13 @@ export default class StartPage extends CreateElement {
     this.greet.textContent(`Hello, ${nameAndSurname[0]} ${nameAndSurname[1]}, nice to meet you!`);
     this.container.appendChildren([this.h2, this.greet, this.text, this.button]);
     this.elementAppend(this.container);
-    this.button.addEventListener('click', this.startGame.bind(this));
+    this.button.addEventListener('click', this.closeStartPage.bind(this));
     return this;
   }
 
-  private startGame(): void {
-    this.button.removeEventListener('click', this.startGame);
+  private closeStartPage(): void {
+    this.button.removeEventListener('click', this.closeStartPage);
     this.removeNode();
+    this.app.startGame();
   }
 }

@@ -22,4 +22,7 @@ const h2 = (props: TagsProps) => new CreateElement<HTMLHeadingElement>({ ...prop
 
 const p = (props: TagsProps) => new CreateElement<HTMLParagraphElement>({ ...props, tag: 'p' });
 
-export { label, input, div, span, form, button, h2, p };
+const main = (props: TagsProps, ...children: ElementOrNull[]) =>
+  new CreateElement({ ...props, tag: 'main' }, ...children);
+
+export { label, input, div, span, form, button, h2, p, main };

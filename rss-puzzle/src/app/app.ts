@@ -3,6 +3,7 @@ import Login from './components/login/login';
 import Header from './components/header/header';
 import { getStorage } from './utils/functions';
 import StartPage from './components/start-page/start-page';
+import Game from './components/game/game';
 
 export default class App extends CreateElement {
   private login = new Login(this);
@@ -10,6 +11,8 @@ export default class App extends CreateElement {
   private header = new Header(this);
 
   private startSreen = new StartPage(this);
+
+  private game = new Game(this);
 
   constructor() {
     super({ tag: 'div', className: 'app' });
@@ -27,5 +30,11 @@ export default class App extends CreateElement {
 
   public startPage(): void {
     this.appendChildren([this.header.startHeader(), this.startSreen.createStartPage()]);
+  }
+
+  public startGame(): void {
+    this.game.clearGame();
+    this.game = new Game(this);
+    this.game.createGame();
   }
 }
