@@ -32,36 +32,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    transition: all 2.5s;
+    gap: 15px;
   }
 
   &__main-field-row {
     height: 100px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
+  }
+
+  &__cover {
+    box-sizing: border-box;
   }
 
   &__item,
   &__item-row {
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 5px;
-    width: 70px;
     border: 3px solid var(--blue);
+    text-align: center;
 
     &:hover {
       cursor: pointer;
     }
   }
 
-  &__cover {
+  .empty {
+    border: 3px dotted var(--blue);
     min-width: 55px;
     min-height: 40px;
     border-radius: 5px;
-
-    &-empty {
-      border: 3px dotted var(--blue);
-    }
   }
 }

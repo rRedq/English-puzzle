@@ -40,12 +40,17 @@ export default class Game extends CreateElement {
   }
 
   private createFields(): void {
-    const wordArray: string[] = this.data.rounds[0].words[0].textExample
+    const wordArray: string[] = this.data.rounds[0].words[7].textExample
       .toLowerCase()
       .split(' ')
       .sort(() => Math.random() - 0.5);
-    wordArray.forEach((item) => {
-      this.puzzleArray.push(new GameItem(this, this.puzzle, item));
+    const containerWidth = 900;
+    const itemPaddings = 40;
+    const maxCount = wordArray.join('').length;
+    const widthForEachLength = (containerWidth - itemPaddings * wordArray.length) / maxCount;
+    wordArray.forEach((word: string) => {
+      const maxItemWidth = widthForEachLength * word.length + itemPaddings;
+      this.puzzleArray.push(new GameItem(this, this.puzzle, word, maxItemWidth));
     });
   }
 

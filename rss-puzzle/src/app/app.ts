@@ -30,6 +30,10 @@ export default class App extends CreateElement {
 
   public startPage(): void {
     this.appendChildren([this.header.startHeader(), this.startSreen.createStartPage()]);
+    // //
+    // this.appendChildren([this.header.startHeader()]);
+    // this.startGame();
+    // //
   }
 
   public startGame(): void {

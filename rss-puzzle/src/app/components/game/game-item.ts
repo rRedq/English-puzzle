@@ -14,7 +14,7 @@ export default class GameItem extends CreateElement {
     },
   });
 
-  constructor(elem: Game, cover: CreateElement, message: string) {
+  constructor(elem: Game, cover: CreateElement, message: string, width: number) {
     super({
       tag: 'div',
       className: 'game__item',
@@ -27,6 +27,7 @@ export default class GameItem extends CreateElement {
     this.container.elementAppend(this);
     this.elem = elem;
     this.message = message;
+    this.container.setProperty('maxWidth', `${width}px`);
   }
 
   private onClickItem(): void {
@@ -34,12 +35,11 @@ export default class GameItem extends CreateElement {
     this.elem.changeToMainField(this.message);
   }
 
-  private onClickCover() {
-    this.container.addClass('game__cover-empty');
+  private onClickCover(): void {
+    this.container.addClass('empty');
   }
 
   public click() {
     this.message = '1';
-    console.log(1);
   }
 }
