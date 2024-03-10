@@ -19,6 +19,14 @@ export default class Game extends CreateElement {
 
   private mainFild = div({ className: 'game__main-field' });
 
+  private compliteBtn = button({
+    className: 'game__btn',
+    textContent: "I don't know",
+    onclick: () => {
+      this.compliteSentence();
+    },
+  });
+
   private countinueBtn = button({
     className: 'game__btn',
     textContent: 'Countinue',
@@ -49,12 +57,13 @@ export default class Game extends CreateElement {
     this.data = data;
     this.currentSentence =
       this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExample.toLowerCase();
+    this.compliteBtn.setProperty('display', 'block');
   }
 
   public createGame(): void {
     this.container.elementAppend(this);
     this.app.elementAppend(this.container);
-    const cover = div({ className: 'game__buttons' }, this.countinueBtn, this.checkBtn);
+    const cover = div({ className: 'game__buttons' }, this.compliteBtn, this.countinueBtn, this.checkBtn);
     this.appendChildren([this.mainFild, this.puzzle, cover]);
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
   }
@@ -62,6 +71,7 @@ export default class Game extends CreateElement {
   private countinue(): void {
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
     this.countinueBtn.setProperty('display', 'none');
+    this.compliteBtn.setProperty('display', 'block');
   }
 
   private checkRound(): void {
@@ -77,23 +87,29 @@ export default class Game extends CreateElement {
 
   private checkRowPhrase(): void {
     RowItem.checkMessage(this.currentSentence);
-    const currentRow = isNull(this.activeRow);
-    if (currentRow.checkPhrase()) {
-      currentRow.removeRow();
-      const recordRow = div({ className: 'game__main-field-row' });
-      this.currentSentence.split(' ').forEach((word) => {
-        recordRow.elementAppend(div({ className: 'game__item-store', textContent: word }));
-      });
-      this.mainFild.elementAppend(recordRow);
-      this.checkRound();
-      this.setVisibleCheckBtn(false);
-      this.countinueBtn.setProperty('display', 'block');
-    }
+    if (isNull(this.activeRow).checkPhrase()) this.resetRow();
   }
 
-  public setVisibleCheckBtn(isVisible: boolean) {
+  private resetRow(): void {
+    isNull(this.activeRow).removeRow();
+    const recordRow = div({ className: 'game__main-field-row' });
+    this.currentSentence.split(' ').forEach((word) => {
+      recordRow.elementAppend(div({ className: 'game__item-store', textContent: word }));
+    });
+    this.mainFild.elementAppend(recordRow);
+    this.checkRound();
+    this.setVisibleCheckBtn(false);
+    this.compliteBtn.setProperty('display', 'none');
+    this.countinueBtn.setProperty('display', 'block');
+  }
+
+  public setVisibleCheckBtn(isVisible: boolean): void {
     if (isVisible) this.checkBtn.setProperty('display', 'block');
     else this.checkBtn.setProperty('display', 'none');
+  }
+
+  private compliteSentence(): void {
+    this.resetRow();
   }
 
   public clearGame(): void {
