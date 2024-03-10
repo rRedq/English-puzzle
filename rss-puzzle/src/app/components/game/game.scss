@@ -74,13 +74,15 @@
     }
   }
 
-  &__countinue-btn {
+  &__btn {
     @extend %btn;
+    display: none;
   }
 
   &__buttons {
     display: flex;
     justify-content: center;
+    min-height: 60px;
     gap: 30px;
   }
 
