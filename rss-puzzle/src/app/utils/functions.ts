@@ -52,16 +52,4 @@ function getNewPosition(column: HTMLElement, posX: number) {
   return result;
 }
 
-function setDragging(rows: HTMLElement[]) {
-  rows.forEach((row) => {
-    row.addEventListener('dragover', (e) => {
-      const dragging = document.querySelector('.dragging');
-      const applyAfter = getNewPosition(row, (e as MouseEvent).clientX);
-
-      if (applyAfter) applyAfter.insertAdjacentElement('afterend', isNull(dragging));
-      else row.prepend(isNull(dragging));
-    });
-  });
-}
-
-export { isNull, setStorage, getStorage, deleteStorageKey, getNewPosition, setDragging };
+export { isNull, setStorage, getStorage, deleteStorageKey, getNewPosition };

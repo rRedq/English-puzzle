@@ -1,7 +1,9 @@
 import CreateElement from '../create-element';
 import PuzzleItem from './puzzle-item';
 import type Game from './game';
-import { setDragging } from '../../utils/functions';
+import { getNewPosition, isNull } from '../../utils/functions';
+import { div } from '../../utils/tag-functions';
+// import { setDragging } from '../../utils/functions';
 
 export default class ActiveGame extends CreateElement {
   private currentString: string;
@@ -26,11 +28,22 @@ export default class ActiveGame extends CreateElement {
       .sort(() => Math.random() - 0.5);
 
     wordArray.forEach((word: string) => {
-      const elem = new PuzzleItem(this, word);
+      const elem = div({ className: 'game__cover' }, new PuzzleItem(this, this.puzzle, word));
       this.puzzle.elementAppend(elem);
     });
 
-    setDragging([this.puzzle.getNode(), this.getNode()]);
+    this.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const dragging = document.querySelector('.dragging');
+      const applyAfter = getNewPosition(this.getNode(), (e as MouseEvent).clientX);
+
+      if (applyAfter) applyAfter.insertAdjacentElement('afterend', isNull(dragging));
+      else this.getNode().prepend(isNull(dragging));
+    });
+    this.addEventListener('drop', (event) => {
+      event.preventDefault();
+      if (event.currentTarget === this.getNode()) PuzzleItem.returnDragging()?.switchRootForDragging();
+    });
   }
 
   public rowItemLengthCheck() {
