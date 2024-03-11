@@ -10,7 +10,7 @@ export default class PuzzleItem extends CreateElement {
 
   private currentPlace: CreateElement | ActiveGame;
 
-  private static dragable: PuzzleItem | undefined;
+  private static dragging: PuzzleItem | undefined;
 
   constructor(elem: ActiveGame, parent: CreateElement, message: string) {
     super({
@@ -24,39 +24,27 @@ export default class PuzzleItem extends CreateElement {
     PuzzleItem.nodes.push(this);
     this.setDragable();
     this.addEventListener('dragstart', () => {
-      PuzzleItem.dragable = this;
+      PuzzleItem.dragging = this;
       this.addClass('dragging');
     });
     this.addEventListener('dragend', () => {
-      PuzzleItem.dragable = undefined;
+      PuzzleItem.dragging = undefined;
       this.removeClass('dragging');
       elem.rowItemLengthCheck();
       PuzzleItem.clearClasses();
     });
-    // elem.addEventListener('drop', (event) => {
-    //   event.preventDefault();
-    //   // console.log(event.target);
-    //   // console.log(this.getNode());
-    //   if (event.currentTarget === elem.getNode()) {
-    //     // this.currentPlace = this.childRoot;
-    //     console.log(this.getNode());
-    //     console.log('Элемент был успешно перетащен в дочерний блок');
-    //   } else {
-    //     console.log('Элемент был брошен по дороге');
-    //   }
-    // });
-    this.addEventListener('click', this.clickElem);
+    this.addEventListener('click', this.clickItem);
   }
 
   public static returnDragging() {
-    return PuzzleItem.dragable;
+    return PuzzleItem.dragging;
   }
 
   public switchRootForDragging() {
     this.currentPlace = this.childRoot;
   }
 
-  private clickElem = () => {
+  private clickItem = () => {
     console.log(this.currentPlace === this.parentRoot);
     if (this.currentPlace === this.parentRoot) {
       this.currentPlace = this.childRoot;
@@ -70,9 +58,7 @@ export default class PuzzleItem extends CreateElement {
           break;
         }
       }
-      // this.currentPlace.elementAppend(this);
     }
-
     this.childRoot.rowItemLengthCheck();
   };
 
