@@ -38,4 +38,30 @@ function deleteStorageKey(id: string): boolean {
   return true;
 }
 
-export { isNull, setStorage, getStorage, deleteStorageKey };
+function getNewPosition(column: HTMLElement, posX: number) {
+  const puzzles = column.querySelectorAll('.game__item:not(.dragging)');
+  let result: Element | undefined;
+
+  for (let i = 0; i < puzzles.length; i += 1) {
+    const box = puzzles[i].getBoundingClientRect();
+    const boxCenterX = box.x + box.height / 2;
+
+    if (posX >= boxCenterX) result = puzzles[i];
+  }
+
+  return result;
+}
+
+function setDragging(rows: HTMLElement[]) {
+  rows.forEach((row) => {
+    row.addEventListener('dragover', (e) => {
+      const dragging = document.querySelector('.dragging');
+      const applyAfter = getNewPosition(row, (e as MouseEvent).clientX);
+
+      if (applyAfter) applyAfter.insertAdjacentElement('afterend', isNull(dragging));
+      else row.prepend(isNull(dragging));
+    });
+  });
+}
+
+export { isNull, setStorage, getStorage, deleteStorageKey, getNewPosition, setDragging };

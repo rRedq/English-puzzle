@@ -25,6 +25,10 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     }
   }
 
+  public setDragable() {
+    this.node.draggable = true;
+  }
+
   public appendChildren(children: ElementOrNull[]): void {
     children.forEach((child) => {
       this.elementAppend(isNull(child));
@@ -46,6 +50,10 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
   public setProperty(prop: keyof CSSStyleDeclaration, value: string): void {
     const formatedProp = (prop as string).replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
     this.getNode().style.setProperty(formatedProp, value);
+  }
+
+  public getChildren(): HTMLCollection {
+    return this.node.children;
   }
 
   public textContent(content: string): void {

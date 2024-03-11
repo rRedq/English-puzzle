@@ -6,7 +6,6 @@ import { type DataJson, type CurrentWord } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
 import { isNull } from '../../utils/functions';
-import RowItem from './row-item';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -49,7 +48,7 @@ export default class Game extends CreateElement {
 
   private activeRow: ActiveGame | undefined;
 
-  private currentRound: CurrentWord = { round: 0, word: 2 };
+  private currentRound: CurrentWord = { round: 0, word: 0 };
 
   constructor(app: App) {
     super({ tag: 'div', className: 'game__fields' });
@@ -86,8 +85,24 @@ export default class Game extends CreateElement {
   }
 
   private checkRowPhrase(): void {
-    RowItem.checkMessage(this.currentSentence);
-    if (isNull(this.activeRow).checkPhrase()) this.resetRow();
+    console.log(this.activeRow?.returnPrase());
+    const words = isNull(this.activeRow?.returnPrase());
+    const str: string[] = [];
+    const currentStr = this.currentSentence.split(' ');
+    for (let i = 0; i < words.length; i += 1) {
+      const word = words[i].textContent;
+      if (word) {
+        str.push(word);
+        if (currentStr[i] === word) {
+          words[i].classList.remove('wrong');
+          words[i].classList.add('success');
+        } else {
+          words[i].classList.remove('success');
+          words[i].classList.add('wrong');
+        }
+      }
+    }
+    if (str.join(' ') === this.currentSentence) this.resetRow();
   }
 
   private resetRow(): void {
