@@ -58,10 +58,9 @@ export default class Game extends CreateElement {
   }
 
   public createGame(): void {
-    this.hints.createHints(
-      this.currentSentence,
-      this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample
-    );
+    const sentence = this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExampleTranslate;
+    const path = this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample;
+    this.hints.createHints(sentence, path);
     this.container.appendChildren([this.hints, this]);
     this.app.elementAppend(this.container);
     const cover = div({ className: 'game__buttons' }, this.compliteBtn, this.countinueBtn, this.checkBtn);
@@ -72,10 +71,9 @@ export default class Game extends CreateElement {
   private countinue(): void {
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
     this.hints.afterRound('countinue');
-    this.hints.createHints(
-      this.currentSentence,
-      this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample
-    );
+    const sentence = this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExampleTranslate;
+    const path = this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample;
+    this.hints.createHints(sentence, path);
     this.countinueBtn.setProperty('display', 'none');
     this.compliteBtn.setProperty('display', 'block');
   }

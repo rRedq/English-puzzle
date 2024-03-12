@@ -37,8 +37,10 @@ export default class Hints extends CreateElement {
 
     if (this.onSound.getNode().getAttribute('playing') === 'false') {
       audio.play();
+      this.onSound.addClass('active-sound');
       audio.addEventListener('ended', () => {
         this.onSound.setAttribute('playing', 'false');
+        this.onSound.removeClass('active-sound');
       });
       this.onSound.setAttribute('playing', 'true');
     }
