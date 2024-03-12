@@ -5,9 +5,11 @@
   background-image: url(../../assets/images/main-back.jpg);
   @extend %imgBackground;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   user-select: none;
   padding: 20px 0;
+  gap: 20px;
 
   &__fields {
     display: flex;
@@ -26,7 +28,7 @@
 
   &__main-field {
     min-height: 520px;
-    padding: 10px;
+    padding: 10px 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -34,7 +36,6 @@
 
   &__puzzle-field {
     height: 50px;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -7,6 +7,7 @@ import './game.scss';
 import ActiveGame from './active-game';
 import { isNull } from '../../utils/functions';
 import createSvg from '../../utils/set-svg';
+import Hints from '../hints/hints';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -49,6 +50,8 @@ export default class Game extends CreateElement {
 
   private activeRow: ActiveGame | undefined;
 
+  private hints = new Hints();
+
   private currentRound: CurrentWord = { round: 0, word: 0 };
 
   constructor(app: App) {
@@ -61,7 +64,8 @@ export default class Game extends CreateElement {
   }
 
   public createGame(): void {
-    this.container.elementAppend(this);
+    this.hints.createHints(this.currentSentence);
+    this.container.appendChildren([this.hints, this]);
     this.app.elementAppend(this.container);
     const cover = div({ className: 'game__buttons' }, this.compliteBtn, this.countinueBtn, this.checkBtn);
     this.appendChildren([this.mainFild, this.puzzle, cover]);
@@ -70,6 +74,7 @@ export default class Game extends CreateElement {
 
   private countinue(): void {
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
+    this.hints.createHints(this.currentSentence);
     this.countinueBtn.setProperty('display', 'none');
     this.compliteBtn.setProperty('display', 'block');
   }

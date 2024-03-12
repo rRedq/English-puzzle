@@ -30,3 +30,17 @@
   background-size: cover;
   background-position: center center;
 }
+
+%apearAnimation {
+  animation-name: apear;
+  animation-duration: 1s;
+
+  @keyframes apear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

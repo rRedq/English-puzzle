@@ -32,17 +32,21 @@ function setUpSvg(currentWord: string, position: string, width: number): SVGSVGE
 export default function createSvg(str: string): CreateSvg[] {
   const words = str.toLowerCase().split(' ');
   const containerWidth = 880 * 2;
-  const baseWidth = containerWidth - 200 * words.length;
-  const baseWidthForEach = baseWidth / words.join('').length;
+  let base = 1000;
+  const baseForEach = (containerWidth - base) / words.join('').length;
+  base /= words.length;
   const result: CreateSvg[] = [];
+
   words.forEach((word, index) => {
-    const elemWidth = baseWidthForEach * word.length + 200;
+    const width = base + baseForEach * word.length;
     let type: string;
-    if (index === 0) {
-      type = setPath(elemWidth).first;
-    } else if (index === words.length - 1) type = setPath(elemWidth).last;
-    else type = setPath(elemWidth).middle;
-    result.push({ width: elemWidth / 2, svg: setUpSvg(word, type, elemWidth) });
+
+    if (index === 0) type = setPath(width).first;
+    else if (index === words.length - 1) type = setPath(width).last;
+    else type = setPath(width).middle;
+
+    result.push({ width: width / 2, svg: setUpSvg(word, type, width) });
   });
+
   return result;
 }
