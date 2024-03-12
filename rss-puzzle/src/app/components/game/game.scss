@@ -7,6 +7,7 @@
   display: flex;
   justify-content: center;
   user-select: none;
+  padding: 20px 0;
 
   &__fields {
     display: flex;
@@ -24,53 +25,26 @@
   }
 
   &__main-field {
-    min-height: 640px;
-    padding: 10px 0;
+    min-height: 520px;
+    padding: 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
 
   &__puzzle-field {
-    padding: 0 10px;
-    height: 80px;
+    height: 50px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    gap: 15px;
   }
 
-  &__cover {
-    box-sizing: border-box;
-    min-width: 70px;
-    min-height: 40px;
-    border-radius: 5px;
-    flex-grow: 1;
-  }
-
-  &__main-field-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50px;
-    gap: 10px;
-    padding: 0 10px;
-  }
-  &__item-store {
-    flex-grow: 1;
-  }
-  &__item,
-  &__item-row,
-  &__item-store {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: 3px solid var(--blue);
-    text-align: center;
+  &__item {
+    max-height: 50px;
     animation-name: apear;
-    animation-duration: 1s;
+    animation-duration: 0.7s;
 
     @keyframes apear {
       from {
@@ -80,14 +54,16 @@
         opacity: 1;
       }
     }
-  }
-  &__item,
-  &__item-row {
-    &:hover {
-      cursor: pointer;
+    svg {
+      height: 50px;
     }
   }
-
+  &__cover {
+    min-width: 60px;
+    min-height: 40px;
+    max-height: 50px;
+    border-radius: 5px;
+  }
   &__btn {
     @extend %btn;
     display: none;
@@ -98,13 +74,6 @@
     justify-content: center;
     min-height: 60px;
     gap: 30px;
-  }
-
-  .wrong {
-    border: 3px solid var(--red);
-  }
-  .success {
-    border: 3px solid var(--green);
   }
 
   .empty {

@@ -1,5 +1,5 @@
 import { type ElementProps } from '../types/interfaces';
-import type ElementOrNull from '../types/types';
+import type { ElementOrNull } from '../types/types';
 import { isNull } from '../utils/functions';
 
 export default class CreateElement<T extends HTMLElement = HTMLElement> {

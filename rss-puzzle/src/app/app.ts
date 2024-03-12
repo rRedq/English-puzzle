@@ -19,7 +19,7 @@ export default class App extends CreateElement {
     document.body.append(this.getNode());
   }
 
-  public appStart() {
+  public appStart(): void {
     this.removeChildren();
     if (getStorage('access').length > 0) {
       this.startPage();

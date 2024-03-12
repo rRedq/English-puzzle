@@ -1,5 +1,5 @@
 import CreateElement from '../components/create-element';
-import type ElementOrNull from '../types/types';
+import type { ElementOrNull } from '../types/types';
 import { type TagsProps, type InputProps } from '../types/interfaces';
 
 const input = (props: InputProps) => new CreateElement<HTMLInputElement>({ ...props, tag: 'input' });

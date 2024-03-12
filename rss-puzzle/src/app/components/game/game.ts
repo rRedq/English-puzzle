@@ -6,6 +6,7 @@ import { type DataJson, type CurrentWord } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
 import { isNull } from '../../utils/functions';
+import createSvg from '../../utils/set-svg';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -85,7 +86,6 @@ export default class Game extends CreateElement {
   }
 
   private checkRowPhrase(): void {
-    console.log(this.activeRow?.returnPrase());
     const words = isNull(this.activeRow?.returnPrase());
     const str: string[] = [];
     const currentStr = this.currentSentence.split(' ');
@@ -93,13 +93,8 @@ export default class Game extends CreateElement {
       const word = words[i].textContent;
       if (word) {
         str.push(word);
-        if (currentStr[i] === word) {
-          words[i].classList.remove('wrong');
-          words[i].classList.add('success');
-        } else {
-          words[i].classList.remove('success');
-          words[i].classList.add('wrong');
-        }
+        if (currentStr[i] === word) (words[i].firstChild as SVGElement).style.fill = 'green';
+        else (words[i].firstChild as SVGElement).style.fill = 'red';
       }
     }
     if (str.join(' ') === this.currentSentence) this.resetRow();
@@ -107,9 +102,13 @@ export default class Game extends CreateElement {
 
   private resetRow(): void {
     isNull(this.activeRow).removeRow();
-    const recordRow = div({ className: 'game__main-field-row' });
-    this.currentSentence.split(' ').forEach((word) => {
-      recordRow.elementAppend(div({ className: 'game__item-store', textContent: word }));
+    const recordRow = div({ className: 'game__puzzle-field' });
+    const svgs = createSvg(this.currentSentence);
+    svgs.forEach((item) => {
+      const cover = div({ className: 'game__item' });
+      cover.setProperty('width', `${item.width}px`);
+      cover.getNode().append(item.svg);
+      recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);
     this.checkRound();

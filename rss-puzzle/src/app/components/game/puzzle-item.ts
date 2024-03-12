@@ -12,15 +12,18 @@ export default class PuzzleItem extends CreateElement {
 
   private static dragging: PuzzleItem | undefined;
 
-  constructor(elem: ActiveGame, parent: CreateElement, message: string) {
+  private svg: SVGSVGElement;
+
+  constructor(elem: ActiveGame, parent: CreateElement, svg: SVGSVGElement, width: number) {
     super({
       tag: 'div',
       className: 'game__item',
-      textContent: message,
     });
+    this.svg = svg;
     this.childRoot = elem;
     this.parentRoot = parent;
     this.currentPlace = parent;
+    this.setProperty('width', `${width}px`);
     PuzzleItem.nodes.push(this);
     this.setDragable();
     this.addEventListener('dragstart', () => {
@@ -34,18 +37,25 @@ export default class PuzzleItem extends CreateElement {
       PuzzleItem.clearClasses();
     });
     this.addEventListener('click', this.clickItem);
+    this.setSvg();
   }
 
-  public static returnDragging() {
+  private setSvg(): void {
+    this.svg.style.position = 'relative';
+    this.svg.style.zIndex = `${15 - PuzzleItem.nodes.length}`;
+    this.getNode().append(this.svg);
+  }
+
+  public static returnDragging(): PuzzleItem | undefined {
     return PuzzleItem.dragging;
   }
 
-  public switchRootForDragging() {
+  public switchRootForDragging(): void {
     this.currentPlace = this.childRoot;
   }
 
-  private clickItem = () => {
-    console.log(this.currentPlace === this.parentRoot);
+  private clickItem = (): void => {
+    PuzzleItem.clearClasses();
     if (this.currentPlace === this.parentRoot) {
       this.currentPlace = this.childRoot;
       this.currentPlace.elementAppend(this);
@@ -64,11 +74,11 @@ export default class PuzzleItem extends CreateElement {
 
   private static clearClasses(): void {
     for (let i = 0; i < PuzzleItem.nodes.length; i += 1) {
-      PuzzleItem.nodes[i].removeClass('success').removeClass('wrong');
+      PuzzleItem.nodes[i].svg.style.fill = 'black';
     }
   }
 
-  public static removeAllItems() {
+  public static removeAllItems(): void {
     PuzzleItem.nodes.length = 0;
   }
 }
