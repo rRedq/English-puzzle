@@ -15,12 +15,22 @@
     width: 700px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
   }
   &__text {
     text-align: center;
     font-size: 24px;
     font-style: italic;
     @extend %apearAnimation;
+  }
+
+  &__sound {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-image: url('../../assets/hints/sound.png');
+    @extend %imgBackground;
+    margin: 0 auto;
   }
 
   &__buttons {
@@ -38,7 +48,7 @@
     width: 40px;
     height: 40px;
     border-radius: 5px;
-    background-image: url('../../assets/hints/textBtn.png');
+    background-image: url('../../assets/hints/text-btn.png');
     @extend %imgBackground;
     background-color: var(--red);
   }

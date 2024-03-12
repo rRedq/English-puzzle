@@ -60,6 +60,14 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     this.node.textContent = content;
   }
 
+  public setAttribute(param: string, value: string): void {
+    this.node.setAttribute(param, value);
+  }
+
+  public getAttribute(param: string): void {
+    this.node.getAttribute(param);
+  }
+
   public addClass(str: string): CreateElement {
     this.node.classList.add(str);
     return this;

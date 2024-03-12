@@ -13,9 +13,10 @@ type CreateSvg = {
   svg: SVGSVGElement;
 };
 
-type Fields = {
+type HintFields = {
   cover: CreateElement;
   textBtn: CreateElement;
+  onSound: CreateElement;
 };
 
-export { ElementOrNull, Paths, CreateSvg, Fields };
+export { ElementOrNull, Paths, CreateSvg, HintFields };
