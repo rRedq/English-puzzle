@@ -70,6 +70,10 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     return this;
   }
 
+  public toggleClass(str: string): void {
+    this.node.classList.toggle(str);
+  }
+
   public removeChildren(): void {
     this.children.forEach((child) => {
       child.removeNode();

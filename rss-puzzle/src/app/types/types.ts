@@ -13,4 +13,9 @@ type CreateSvg = {
   svg: SVGSVGElement;
 };
 
-export { ElementOrNull, Paths, CreateSvg };
+type Fields = {
+  cover: CreateElement;
+  textBtn: CreateElement;
+};
+
+export { ElementOrNull, Paths, CreateSvg, Fields };

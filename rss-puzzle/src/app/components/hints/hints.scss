@@ -28,6 +28,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .disable {
+      background-color: var(--light-3);
+    }
   }
 
   &__btn {
@@ -36,6 +40,6 @@
     border-radius: 5px;
     background-image: url('../../assets/hints/textBtn.png');
     @extend %imgBackground;
-    background-color: var(--light-3);
+    background-color: var(--red);
   }
 }

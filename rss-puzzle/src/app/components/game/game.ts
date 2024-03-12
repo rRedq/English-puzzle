@@ -23,25 +23,19 @@ export default class Game extends CreateElement {
   private compliteBtn = button({
     className: 'game__btn',
     textContent: "I don't know",
-    onclick: () => {
-      this.compliteSentence();
-    },
+    onclick: () => this.compliteSentence(),
   });
 
   private countinueBtn = button({
     className: 'game__btn',
     textContent: 'Countinue',
-    onclick: () => {
-      this.countinue();
-    },
+    onclick: () => this.countinue(),
   });
 
   private checkBtn = button({
     className: 'game__btn',
     textContent: 'Check',
-    onclick: () => {
-      this.checkRowPhrase();
-    },
+    onclick: () => this.checkRowPhrase(),
   });
 
   private data: DataJson;
@@ -74,6 +68,7 @@ export default class Game extends CreateElement {
 
   private countinue(): void {
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
+    this.hints.afterRound('countinue');
     this.hints.createHints(this.currentSentence);
     this.countinueBtn.setProperty('display', 'none');
     this.compliteBtn.setProperty('display', 'block');
@@ -107,6 +102,7 @@ export default class Game extends CreateElement {
 
   private resetRow(): void {
     isNull(this.activeRow).removeRow();
+    this.hints.afterRound('check');
     const recordRow = div({ className: 'game__puzzle-field' });
     const svgs = createSvg(this.currentSentence);
     svgs.forEach((item) => {
