@@ -13,10 +13,12 @@ type CreateSvg = {
   svg: SVGSVGElement;
 };
 
-type HintFields = {
-  cover: CreateElement;
-  textBtn: CreateElement;
-  onSound: CreateElement;
+type HintFields<T> = {
+  cover: T;
+  textBtn: T;
+  onSound: T;
+  soundBtn: T;
+  textHint: T;
 };
 
 export { ElementOrNull, Paths, CreateSvg, HintFields };

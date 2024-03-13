@@ -12,7 +12,7 @@
   box-sizing: border-box;
 
   &__cover {
-    width: 700px;
+    width: 750px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -24,7 +24,7 @@
     @extend %apearAnimation;
   }
 
-  &__sound {
+  &__pronounce {
     width: 35px;
     height: 35px;
     border: none;
@@ -63,10 +63,10 @@
   }
 
   &__buttons {
-    width: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 
     .disable {
       background-color: var(--light-3);
@@ -77,8 +77,13 @@
     width: 40px;
     height: 40px;
     border-radius: 5px;
-    background-image: url('../../assets/hints/text-btn.png');
     @extend %imgBackground;
     background-color: var(--red);
+  }
+  &__text-btn {
+    background-image: url('../../assets/hints/text-btn.png');
+  }
+  &__sound-btn {
+    background-image: url('../../assets/hints/sound-btn.png');
   }
 }

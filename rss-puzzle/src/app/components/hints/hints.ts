@@ -12,15 +12,22 @@ export default class Hints extends CreateElement {
 
   private textBtn: CreateElement = Hints.fields().textBtn;
 
+  private soundBtn: CreateElement = Hints.fields().soundBtn;
+
   private onSound: CreateElement = Hints.fields().onSound;
 
-  private textField: boolean = true;
+  private textHint: CreateElement = Hints.fields().textHint;
+
+  private isText: boolean = true;
+
+  private isSound: boolean = true;
 
   constructor() {
     super({ tag: 'div', className: 'hints' });
-    this.appendChildren([this.cover, div({ className: 'hints__buttons' }, this.textBtn)]);
+    this.appendChildren([this.cover, div({ className: 'hints__buttons' }, this.textBtn, this.soundBtn)]);
     this.textBtn.addEventListener('click', this.clickText);
-    this.onSound.addEventListener('click', this.onSoundClick);
+    this.soundBtn.addEventListener('click', this.clickSound);
+    this.onSound.addEventListener('click', this.onSoundHint);
     this.onSound.setAttribute('playing', 'false');
   }
 
@@ -28,10 +35,11 @@ export default class Hints extends CreateElement {
     this.sentence = sentence;
     this.soundPath = path;
     this.cover.removeChildren();
-    this.cover.appendChildren([this.onSound, div({ className: 'hints__text', textContent: `${this.sentence}` })]);
+    this.textHint.textContent(this.sentence);
+    this.cover.appendChildren([this.onSound, this.textHint]);
   }
 
-  private onSoundClick = () => {
+  private onSoundHint = () => {
     const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/${this.soundPath}`;
     const audio = new Audio(link);
 
@@ -46,30 +54,41 @@ export default class Hints extends CreateElement {
     }
   };
 
-  private clickText = () => {
-    this.textBtn.toggleClass('disable');
-    this.textField = !this.textField;
-    this.showHints(this.textField);
+  private clickSound = () => {
+    this.soundBtn.toggleClass('disable');
+    this.isSound = !this.isSound;
+    this.showHints(this.isText, this.isSound);
   };
 
-  private showHints(isText: boolean) {
-    this.cover.setProperty('visibility', `${isText ? 'visible' : 'hidden'}`);
+  private clickText = () => {
+    this.textBtn.toggleClass('disable');
+    this.isText = !this.isText;
+    this.showHints(this.isText, this.isSound);
+  };
+
+  private showHints(isText: boolean, isSound: boolean) {
+    this.textHint.setProperty('visibility', `${isText ? 'visible' : 'hidden'}`);
+    this.onSound.setProperty('visibility', `${isSound ? 'visible' : 'hidden'}`);
   }
 
   public afterRound(state: 'check' | 'countinue'): void {
-    if (state === 'check') this.showHints(true);
-    else this.showHints(this.textField);
+    if (state === 'check') this.showHints(true, true);
+    else this.showHints(this.isText, this.isSound);
   }
 
-  private static fields(): HintFields {
+  private static fields(): HintFields<CreateElement> {
     return {
       cover: div({ className: 'hints__cover' }),
       textBtn: button({
-        className: 'hints__text hints__btn',
+        className: 'hints__text-btn hints__btn',
       }),
       onSound: button({
-        className: 'hints__sound',
+        className: 'hints__pronounce',
       }),
+      soundBtn: button({
+        className: 'hints__sound-btn hints__btn',
+      }),
+      textHint: div({ className: 'hints__text' }),
     };
   }
 }
