@@ -36,16 +36,19 @@ export default class Login extends CreateElement {
     this.secondField.createInput();
     this.elementAppend(this.form);
     this.form.appendChildren([this.firstField, this.secondField, this.button]);
-    this.button.addEventListener('click', this.accessCheck.bind(this));
+    this.button.addEventListener('click', this.accessCheck);
     return this;
   }
 
-  private accessCheck(e: Event): void {
+  private accessCheck = (e: Event): void => {
     e.preventDefault();
     if (this.firstField.getAccess() && this.secondField.getAccess()) {
-      setStorage('access', [this.firstField.getValue(), this.secondField.getValue()]);
+      setStorage('access', {
+        firstName: this.firstField.getValue(),
+        surName: this.secondField.getValue(),
+      });
       this.removeNode();
       this.app.startPage();
     }
-  }
+  };
 }

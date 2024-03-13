@@ -2,6 +2,8 @@ import './hints.scss';
 import CreateElement from '../create-element';
 import { button, div } from '../../utils/tag-functions';
 import type { HintFields } from '../../types/types';
+import { getStorage, setStorage } from '../../utils/functions';
+import { type StorageHints } from '../../types/interfaces';
 
 export default class Hints extends CreateElement {
   private sentence: string = '';
@@ -29,6 +31,7 @@ export default class Hints extends CreateElement {
     this.soundBtn.addEventListener('click', this.clickSound);
     this.onSound.addEventListener('click', this.onSoundHint);
     this.onSound.setAttribute('playing', 'false');
+    this.setHintsStatus();
   }
 
   public createHints(sentence: string, path: string) {
@@ -69,6 +72,20 @@ export default class Hints extends CreateElement {
   private showHints(isText: boolean, isSound: boolean) {
     this.textHint.setProperty('visibility', `${isText ? 'visible' : 'hidden'}`);
     this.onSound.setProperty('visibility', `${isSound ? 'visible' : 'hidden'}`);
+    setStorage('hints', { isText: this.isText, isSound: this.isSound });
+  }
+
+  private setHintsStatus() {
+    const statuses = getStorage<StorageHints>('hints');
+    if (statuses) {
+      this.isText = statuses.isText;
+      this.isSound = statuses.isSound;
+    }
+    this.showHints(this.isText, this.isSound);
+    if (this.isText) this.textBtn.removeClass('disable');
+    else this.textBtn.addClass('disable');
+    if (this.isSound) this.soundBtn.removeClass('disable');
+    else this.soundBtn.addClass('disable');
   }
 
   public afterRound(state: 'check' | 'countinue'): void {

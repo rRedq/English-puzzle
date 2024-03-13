@@ -1,6 +1,6 @@
 import CreateElement from '../create-element';
 import { button } from '../../utils/tag-functions';
-import { deleteStorageKey } from '../../utils/functions';
+import { deleteStorage } from '../../utils/functions';
 import type App from '../../app';
 import './header.scss';
 
@@ -16,15 +16,14 @@ export default class Header extends CreateElement {
   }
 
   public startHeader(): CreateElement {
-    this.button.addEventListener('click', this.loginOut.bind(this));
+    this.button.addEventListener('click', this.loginOut);
     this.elementAppend(this.button);
     return this;
   }
 
-  private loginOut(): void {
-    if (deleteStorageKey('access')) {
-      this.removeNode();
-      this.app.appStart();
-    }
-  }
+  private loginOut = (): void => {
+    deleteStorage();
+    this.removeNode();
+    this.app.appStart();
+  };
 }

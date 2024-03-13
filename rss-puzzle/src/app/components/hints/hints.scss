@@ -31,6 +31,9 @@
     background-image: url('../../assets/hints/sound.png');
     @extend %imgBackground;
     margin: 0 auto;
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .active-sound {
@@ -79,6 +82,9 @@
     border-radius: 5px;
     @extend %imgBackground;
     background-color: var(--red);
+    &:hover {
+      cursor: pointer;
+    }
   }
   &__text-btn {
     background-image: url('../../assets/hints/text-btn.png');

@@ -46,6 +46,9 @@
     max-height: 50px;
     animation-name: apear;
     animation-duration: 0.7s;
+    &:hover {
+      cursor: pointer;
+    }
 
     @keyframes apear {
       from {

@@ -3,6 +3,7 @@ import CreateElement from '../create-element';
 import { button, div, h2, p } from '../../utils/tag-functions';
 import './start-page.scss';
 import { getStorage } from '../../utils/functions';
+import { type StorageAccess } from '../../types/interfaces';
 
 export default class StartPage extends CreateElement {
   private app: App;
@@ -28,8 +29,8 @@ export default class StartPage extends CreateElement {
   }
 
   public createStartPage(): CreateElement {
-    const nameAndSurname = getStorage('access');
-    this.greet.textContent(`Hello, ${nameAndSurname[0]} ${nameAndSurname[1]}, nice to meet you!`);
+    const nameAndSurname = getStorage<StorageAccess>('access');
+    this.greet.textContent(`Hello, ${nameAndSurname?.firstName} ${nameAndSurname?.surName}, nice to meet you!`);
     this.container.appendChildren([this.h2, this.greet, this.text, this.button]);
     this.elementAppend(this.container);
     this.button.addEventListener('click', this.closeStartPage.bind(this));

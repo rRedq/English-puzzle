@@ -4,6 +4,7 @@ import Header from './components/header/header';
 import { getStorage } from './utils/functions';
 import StartPage from './components/start-page/start-page';
 import Game from './components/game/game';
+import { type StorageAccess } from './types/interfaces';
 
 export default class App extends CreateElement {
   private login = new Login(this);
@@ -21,7 +22,7 @@ export default class App extends CreateElement {
 
   public appStart(): void {
     this.removeChildren();
-    if (getStorage('access').length > 0) {
+    if (getStorage<StorageAccess>('access')) {
       this.startPage();
     } else {
       this.elementAppend(this.login.createLogin());

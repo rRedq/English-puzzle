@@ -42,7 +42,7 @@ export default class PuzzleItem extends CreateElement {
 
   private setSvg(): void {
     this.svg.style.position = 'relative';
-    this.svg.style.zIndex = `${15 - PuzzleItem.nodes.length}`;
+    this.svg.style.zIndex = `${50 - PuzzleItem.nodes.length}`;
     this.getNode().append(this.svg);
   }
 

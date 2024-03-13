@@ -47,4 +47,14 @@ interface CurrentWord {
   word: number;
 }
 
-export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord };
+interface StorageAccess {
+  firstName: string;
+  surName: string;
+}
+
+interface StorageHints {
+  isText: boolean;
+  isSound: boolean;
+}
+
+export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord, StorageAccess, StorageHints };

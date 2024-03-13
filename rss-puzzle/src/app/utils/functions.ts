@@ -1,4 +1,5 @@
 import StorageStatus from '../types/enum';
+import type { StorageHints, StorageAccess } from '../types/interfaces';
 
 function isNull<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -10,32 +11,33 @@ function checkId(id: string): void {
   if (!Object.values(StorageStatus)[Object.keys(StorageStatus).indexOf(id)]) throw Error(`Unexpected id: ${id}`);
 }
 
-function setStorage(id: string, value: string[]): void {
+function setStorage(id: string, value: StorageHints | StorageAccess): void {
   checkId(id);
-  const obj = new Map<string, string[]>();
-  obj.set(id, value);
+  let obj;
+  const prevObj = localStorage.getItem('rredq');
+  if (prevObj) {
+    obj = new Map<string, StorageHints | StorageAccess>(JSON.parse(prevObj));
+    obj.set(id, value);
+  } else {
+    obj = new Map<string, StorageHints | StorageAccess>();
+    obj.set(id, value);
+  }
+
   localStorage.setItem('rredq', JSON.stringify([...obj]));
 }
 
-function getStorage(id: string): string[] {
+function getStorage<T>(id: string): T | undefined {
   checkId(id);
   const storage = localStorage.getItem('rredq');
-  if (!storage) return [];
-  const result = new Map<string, string[]>(JSON.parse(storage)).get(id);
-  if (!result) return [];
+  if (!storage) return undefined;
+  const result = new Map<string, T>(JSON.parse(storage)).get(id);
+  if (!result) return undefined;
 
   return result;
 }
 
-function deleteStorageKey(id: string): boolean {
-  checkId(id);
-  const storage = localStorage.getItem('rredq');
-  if (!storage) return false;
-  const result = new Map<string, string[]>(JSON.parse(storage));
-  if (!result || !result.get(id)) return false;
-  result.delete(id);
-  localStorage.setItem('rredq', JSON.stringify([...result]));
-  return true;
+function deleteStorage() {
+  localStorage.clear();
 }
 
 function getNewPosition(column: HTMLElement, posX: number) {
@@ -52,4 +54,4 @@ function getNewPosition(column: HTMLElement, posX: number) {
   return result;
 }
 
-export { isNull, setStorage, getStorage, deleteStorageKey, getNewPosition };
+export { isNull, setStorage, getStorage, deleteStorage, getNewPosition };
