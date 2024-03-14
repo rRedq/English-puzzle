@@ -39,6 +39,12 @@ export default class Game extends CreateElement {
     onclick: () => this.checkRowPhrase(),
   });
 
+  private resultBtn = button({
+    className: 'game__btn',
+    textContent: 'Result',
+    onclick: () => this.clickResult(),
+  });
+
   private data: DataJson | undefined;
 
   private currentSentence: string = '';
@@ -82,7 +88,13 @@ export default class Game extends CreateElement {
     const path = this.myData().audioExample;
     this.hints.createHints(sentence, path);
     // Buttons
-    const cover = div({ className: 'game__buttons' }, this.compliteBtn, this.countinueBtn, this.checkBtn);
+    const cover = div(
+      { className: 'game__buttons' },
+      this.compliteBtn,
+      this.countinueBtn,
+      this.resultBtn,
+      this.checkBtn
+    );
     this.gameField.appendChildren([this.mainFild, this.puzzle, cover]);
     // Active game
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
@@ -150,6 +162,7 @@ export default class Game extends CreateElement {
     });
     this.mainFild.elementAppend(recordRow);
     this.setVisibleCheckBtn(false);
+    if (this.currentRound.word === 9) this.resultBtn.setProperty('display', 'block');
     this.compliteBtn.setProperty('display', 'none');
     this.countinueBtn.setProperty('display', 'block');
   }
@@ -161,6 +174,11 @@ export default class Game extends CreateElement {
 
   private compliteSentence = (): void => {
     this.resetRow();
+  };
+
+  private clickResult = (): void => {
+    this.clearGame();
+    this.app.startResult();
   };
 
   public clearGame(): void {

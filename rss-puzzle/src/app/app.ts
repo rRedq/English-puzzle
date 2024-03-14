@@ -2,10 +2,11 @@ import CreateElement from './components/create-element';
 import Login from './components/login/login';
 import Header from './components/header/header';
 import { getStorage } from './utils/functions';
-import StartPage from './components/start-page/start-page';
+// import StartPage from './components/start-page/start-page';
 import Game from './components/game/game';
 import { type StorageAccess, type CurrentWord } from './types/interfaces';
 import Modal from './components/modal/modal';
+import Result from './components/result/result';
 
 export default class App extends CreateElement {
   private game: Game | undefined;
@@ -27,11 +28,11 @@ export default class App extends CreateElement {
   }
 
   public startPage(): void {
-    this.appendChildren([new Header(this), new StartPage(this)]);
-    // //
-    // this.elementAppend(new Header(this));
-    // this.startGame();
-    // //
+    // this.appendChildren([new Header(this), new StartPage(this)]);
+    //
+    this.elementAppend(new Header(this));
+    this.startGame();
+    //
   }
 
   public startGame(obj?: CurrentWord, isModal?: boolean): void {
@@ -39,5 +40,9 @@ export default class App extends CreateElement {
     this.game = new Game(this, obj);
     if (isModal && obj) this.appendChildren([this.game, new Modal(obj)]);
     else this.elementAppend(this.game);
+  }
+
+  public startResult() {
+    this.elementAppend(new Result(this));
   }
 }
