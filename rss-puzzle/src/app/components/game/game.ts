@@ -111,7 +111,7 @@ export default class Game extends CreateElement {
     this.compliteBtn.setProperty('display', 'block');
   };
 
-  private checkRound(): void {
+  private checkRound(isResult = true): void {
     if (this.currentRound.word > 8) {
       const currentLength = getProgressStorage(this.currentRound.level).length;
       const currentLevel = this.currentRound.level;
@@ -129,7 +129,7 @@ export default class Game extends CreateElement {
       }
       levelUp(isNull(this.data).roundsCount, currentLength, currentLevel);
       setStorage<CurrentWord>('lastGame', { level: this.currentRound.level, round: this.currentRound.round, word: 0 });
-      this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
+      if (isResult) this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
     } else this.currentRound.word += 1;
     this.currentSentence = this.myData().textExample.toLowerCase();
   }
@@ -177,6 +177,7 @@ export default class Game extends CreateElement {
   };
 
   private clickResult = (): void => {
+    this.checkRound(false);
     this.clearGame();
     this.app.startResult();
   };

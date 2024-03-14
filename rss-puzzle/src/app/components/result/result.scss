@@ -1,0 +1,27 @@
+@import '../../utils/common-styles.scss';
+
+.result {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  @include fadeIn(2s);
+
+  &__stat {
+    width: 600px;
+    height: 600px;
+    background: var(--light-1);
+    padding: 10px;
+    border-radius: 7px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__continue {
+    @extend %btn;
+  }
+  &__fade-out {
+    @include fadeOut(1s);
+  }
+}

@@ -18,6 +18,6 @@ export default class Modal extends CreateElement {
     this.elementAppend(div({ className: 'modal__content' }, text, level, round));
     setTimeout(() => {
       this.removeNode();
-    }, 5000);
+    }, 4000);
   }
 }
