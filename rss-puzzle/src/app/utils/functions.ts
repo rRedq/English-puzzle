@@ -12,19 +12,62 @@ function checkId(id: string): void {
   if (!Object.values(StorageStatus)[Object.keys(StorageStatus).indexOf(id)]) throw Error(`Unexpected id: ${id}`);
 }
 
-function setStorage(id: string, value: StorageHints | StorageAccess): void {
+function setStorage(id: string, value: StorageHints | StorageAccess | LevelsData): void {
   checkId(id);
   let obj;
   const prevObj = localStorage.getItem('rredq');
   if (prevObj) {
-    obj = new Map<string, StorageHints | StorageAccess>(JSON.parse(prevObj));
+    obj = new Map<string, StorageHints | StorageAccess | LevelsData>(JSON.parse(prevObj));
     obj.set(id, value);
   } else {
-    obj = new Map<string, StorageHints | StorageAccess>();
+    obj = new Map<string, StorageHints | StorageAccess | LevelsData>();
     obj.set(id, value);
   }
 
   localStorage.setItem('rredq', JSON.stringify([...obj]));
+}
+
+function getProgressStorage(level: LevelsData): number[] | undefined {
+  const prevObj = localStorage.getItem('rredq-progress');
+  if (!prevObj) return undefined;
+
+  const obj = new Map<string, Map<LevelsData, number[]>>(JSON.parse(prevObj));
+  const newObj = new Map<LevelsData, number[]>(obj.get('progress'));
+
+  let result;
+  if (newObj.has(level)) result = newObj.get(level);
+
+  return result;
+}
+
+function setProgressStorage(level: LevelsData, round: number[]): void {
+  const prevObj = localStorage.getItem('rredq-progress');
+  let obj;
+
+  if (prevObj) {
+    obj = new Map<string, Map<LevelsData, number[]>>(JSON.parse(prevObj));
+    const newObj = new Map<LevelsData, number[]>(obj.get('progress'));
+
+    if (newObj.has(level)) {
+      const set = new Set(newObj.get(level));
+      round.forEach((item: number) => {
+        set.add(item);
+      });
+      newObj.set(level, [...set]);
+      obj.set('progress', newObj);
+    } else {
+      newObj.set(level, round);
+      obj.set('progress', newObj);
+    }
+  } else {
+    const baseMap = new Map<LevelsData, number[]>();
+    baseMap.set(level, round);
+    obj = new Map<string, Map<LevelsData, number[]>>();
+    obj.set('progress', baseMap);
+  }
+
+  const serialized = Array.from(obj, ([key, value]) => [key, Array.from(value)]);
+  localStorage.setItem('rredq-progress', JSON.stringify(serialized));
 }
 
 function getStorage<T>(id: string): T | undefined {
@@ -64,4 +107,13 @@ async function getData(level: LevelsData): Promise<DataJson> {
   return result;
 }
 
-export { isNull, setStorage, getStorage, deleteStorage, getNewPosition, getData };
+export {
+  isNull,
+  setStorage,
+  getStorage,
+  deleteStorage,
+  getNewPosition,
+  getData,
+  setProgressStorage,
+  getProgressStorage,
+};

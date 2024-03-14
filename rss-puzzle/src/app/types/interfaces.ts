@@ -60,4 +60,19 @@ interface StorageHints {
   isSound: boolean;
 }
 
-export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord, StorageAccess, StorageHints, Word };
+interface StorageProgress {
+  level: LevelsData;
+  rounds: number[];
+}
+
+export {
+  InputProps,
+  TagsProps,
+  ElementProps,
+  DataJson,
+  CurrentWord,
+  StorageAccess,
+  StorageHints,
+  Word,
+  StorageProgress,
+};

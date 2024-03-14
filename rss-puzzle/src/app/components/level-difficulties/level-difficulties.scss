@@ -20,7 +20,13 @@
       width: 150px;
       border-radius: 3px;
       overflow: hidden;
-      background-color: var(--light-0);
+      background-color: var(--light-1);
+    }
+  }
+  &__option {
+    background-color: var(--light-1);
+    &-marked {
+      background-color: var(--middle-3);
     }
   }
 }

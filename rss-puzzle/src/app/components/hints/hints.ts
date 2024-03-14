@@ -60,19 +60,20 @@ export default class Hints extends CreateElement {
   private clickSound = () => {
     this.soundBtn.toggleClass('disable');
     this.isSound = !this.isSound;
+    setStorage('hints', { isText: this.isText, isSound: this.isSound });
     this.showHints(this.isText, this.isSound);
   };
 
   private clickText = () => {
     this.textBtn.toggleClass('disable');
     this.isText = !this.isText;
+    setStorage('hints', { isText: this.isText, isSound: this.isSound });
     this.showHints(this.isText, this.isSound);
   };
 
   private showHints(isText: boolean, isSound: boolean) {
     this.textHint.setProperty('visibility', `${isText ? 'visible' : 'hidden'}`);
     this.onSound.setProperty('visibility', `${isSound ? 'visible' : 'hidden'}`);
-    setStorage('hints', { isText: this.isText, isSound: this.isSound });
   }
 
   private setHintsStatus() {

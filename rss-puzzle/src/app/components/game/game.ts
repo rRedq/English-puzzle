@@ -3,7 +3,7 @@ import { div, button } from '../../utils/tag-functions';
 import type { DataJson, CurrentWord, Word } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
-import { getData, isNull } from '../../utils/functions';
+import { getData, isNull, setProgressStorage, setStorage } from '../../utils/functions';
 import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
 import Levels from '../level-difficulties/level-difficulties';
@@ -88,6 +88,7 @@ export default class Game extends CreateElement {
   }
 
   private countinue = (): void => {
+    this.checkRound();
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
     this.hints.afterRound('countinue');
     const sentence = this.myData().textExampleTranslate;
@@ -99,11 +100,22 @@ export default class Game extends CreateElement {
 
   private checkRound(): void {
     if (this.currentRound.word > 8) {
-      this.currentRound.round += 1;
-      this.currentRound.word = 0;
-    } else {
-      this.currentRound.word += 1;
-    }
+      if (this.currentRound.round + 1 < isNull(this.data).rounds.length) {
+        setProgressStorage(this.currentRound.level, [this.currentRound.round]);
+        this.currentRound.round += 1;
+      } else if (this.currentRound.level + 1 < 7) {
+        setProgressStorage(this.currentRound.level, [this.currentRound.round]);
+        setStorage('progress', this.currentRound.level);
+        this.currentRound.level += 1;
+        this.currentRound.round = 0;
+      } else {
+        setProgressStorage(this.currentRound.level, [this.currentRound.round]);
+        this.currentRound.level = 1;
+        this.currentRound.round = 0;
+      }
+      this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
+    } else this.currentRound.word += 1;
+
     this.currentSentence = this.myData().textExample.toLowerCase();
   }
 
@@ -134,7 +146,6 @@ export default class Game extends CreateElement {
       recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);
-    this.checkRound();
     this.setVisibleCheckBtn(false);
     this.compliteBtn.setProperty('display', 'none');
     this.countinueBtn.setProperty('display', 'block');

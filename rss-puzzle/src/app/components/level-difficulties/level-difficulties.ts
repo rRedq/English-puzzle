@@ -4,6 +4,7 @@ import type { LevelsData } from '../../types/types';
 import { select } from '../../utils/tag-functions';
 import { createContainer } from '../../utils/helper-functions';
 import type App from '../../app';
+import { getProgressStorage } from '../../utils/functions';
 
 export default class Levels extends CreateElement {
   private app: App;
@@ -30,8 +31,9 @@ export default class Levels extends CreateElement {
   }
 
   private createLevels() {
+    const rounds = getProgressStorage(this.currentLevel);
     createContainer(this, this.levelSelect, 6, 'Level', this.currentLevel.toString());
-    createContainer(this, this.roundSelect, this.roundsCount, 'Round', this.currentRound.toString());
+    createContainer(this, this.roundSelect, this.roundsCount, 'Round', this.currentRound.toString(), rounds);
   }
 
   private changeLevelSelect = () => {
