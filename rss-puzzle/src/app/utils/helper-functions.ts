@@ -1,4 +1,6 @@
 import type CreateElement from '../components/create-element';
+import { LevelsData } from '../types/types';
+import { getStorage, setStorage } from './functions';
 import { div, option, p } from './tag-functions';
 
 function createList(parentNode: CreateElement, values: number, marked?: number[]): void {
@@ -31,4 +33,14 @@ function createContainer(
   parentNode.elementAppend(container);
 }
 
-export { createContainer, createList };
+function levelUp(maxCount: number, length: number, level: LevelsData) {
+  if (maxCount === length) {
+    const levels = getStorage<LevelsData[]>('progress');
+    if (levels) {
+      const newLevels = new Set([...levels, level]);
+      setStorage<LevelsData[]>('progress', [...newLevels]);
+    } else setStorage<LevelsData[]>('progress', [level]);
+  }
+}
+
+export { createContainer, createList, levelUp };

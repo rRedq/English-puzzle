@@ -3,13 +3,14 @@ import { div, button } from '../../utils/tag-functions';
 import type { DataJson, CurrentWord, Word } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
-import { getData, isNull, setProgressStorage, setStorage } from '../../utils/functions';
+import { getData, getProgressStorage, isNull, setProgressStorage } from '../../utils/functions';
 import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
 import Levels from '../level-difficulties/level-difficulties';
 import type { LevelsData } from '../../types/types';
 import type App from '../../app';
 import PuzzleItem from './puzzle-item';
+import { levelUp } from '../../utils/helper-functions';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -104,18 +105,26 @@ export default class Game extends CreateElement {
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
         this.currentRound.round += 1;
       } else if (this.currentRound.level + 1 < 7) {
+        levelUp(
+          isNull(this.data).roundsCount,
+          isNull(getProgressStorage(this.currentRound.level)).length,
+          this.currentRound.level
+        );
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
-        setStorage('progress', this.currentRound.level);
         this.currentRound.level += 1;
         this.currentRound.round = 0;
       } else {
+        levelUp(
+          isNull(this.data).roundsCount,
+          isNull(getProgressStorage(this.currentRound.level)).length,
+          this.currentRound.level
+        );
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
         this.currentRound.level = 1;
         this.currentRound.round = 0;
       }
       this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
     } else this.currentRound.word += 1;
-
     this.currentSentence = this.myData().textExample.toLowerCase();
   }
 

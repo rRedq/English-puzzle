@@ -1,5 +1,5 @@
 import StorageStatus from '../types/enum';
-import type { StorageHints, StorageAccess, DataJson } from '../types/interfaces';
+import type { DataJson } from '../types/interfaces';
 import type { LevelsData } from '../types/types';
 
 function isNull<T>(value: T): NonNullable<T> {
@@ -12,15 +12,15 @@ function checkId(id: string): void {
   if (!Object.values(StorageStatus)[Object.keys(StorageStatus).indexOf(id)]) throw Error(`Unexpected id: ${id}`);
 }
 
-function setStorage(id: string, value: StorageHints | StorageAccess | LevelsData): void {
+function setStorage<T>(id: string, value: T): void {
   checkId(id);
   let obj;
   const prevObj = localStorage.getItem('rredq');
   if (prevObj) {
-    obj = new Map<string, StorageHints | StorageAccess | LevelsData>(JSON.parse(prevObj));
+    obj = new Map<string, T>(JSON.parse(prevObj));
     obj.set(id, value);
   } else {
-    obj = new Map<string, StorageHints | StorageAccess | LevelsData>();
+    obj = new Map<string, T>();
     obj.set(id, value);
   }
 
