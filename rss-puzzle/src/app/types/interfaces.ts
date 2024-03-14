@@ -1,3 +1,5 @@
+import type { LevelsData } from './types';
+
 interface ElementProps {
   tag: keyof HTMLElementTagNameMap;
   className?: string;
@@ -43,6 +45,7 @@ interface DataJson {
 }
 
 interface CurrentWord {
+  level: LevelsData;
   round: number;
   word: number;
 }
@@ -57,4 +60,4 @@ interface StorageHints {
   isSound: boolean;
 }
 
-export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord, StorageAccess, StorageHints };
+export { InputProps, TagsProps, ElementProps, DataJson, CurrentWord, StorageAccess, StorageHints, Word };

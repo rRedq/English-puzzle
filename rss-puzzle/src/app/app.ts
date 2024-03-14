@@ -4,16 +4,12 @@ import Header from './components/header/header';
 import { getStorage } from './utils/functions';
 import StartPage from './components/start-page/start-page';
 import Game from './components/game/game';
-import { type StorageAccess } from './types/interfaces';
+import { type StorageAccess, type CurrentWord } from './types/interfaces';
 
 export default class App extends CreateElement {
   private login = new Login(this);
 
-  private header = new Header(this);
-
-  private startSreen = new StartPage(this);
-
-  private game = new Game(this);
+  private game: Game | undefined;
 
   constructor() {
     super({ tag: 'div', className: 'app' });
@@ -30,16 +26,16 @@ export default class App extends CreateElement {
   }
 
   public startPage(): void {
-    this.appendChildren([this.header.startHeader(), this.startSreen.createStartPage()]);
+    this.appendChildren([new Header(this), new StartPage(this)]);
     // //
-    // this.appendChildren([this.header.startHeader()]);
+    // this.elementAppend(new Header(this));
     // this.startGame();
     // //
   }
 
-  public startGame(): void {
-    this.game.clearGame();
-    this.game = new Game(this);
-    this.game.createGame();
+  public startGame(obj?: CurrentWord): void {
+    if (this.game) this.game.clearGame();
+    this.game = new Game(this, obj);
+    this.elementAppend(this.game);
   }
 }

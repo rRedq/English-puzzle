@@ -26,15 +26,11 @@ export default class StartPage extends CreateElement {
     super({ tag: 'div', className: 'start-page' });
     this.app = elem;
     this.button = button({ className: 'start-page__btn', textContent: 'Start' });
-  }
-
-  public createStartPage(): CreateElement {
     const nameAndSurname = getStorage<StorageAccess>('access');
     this.greet.textContent(`Hello, ${nameAndSurname?.firstName} ${nameAndSurname?.surName}, nice to meet you!`);
     this.container.appendChildren([this.h2, this.greet, this.text, this.button]);
     this.elementAppend(this.container);
     this.button.addEventListener('click', this.closeStartPage.bind(this));
-    return this;
   }
 
   private closeStartPage(): void {

@@ -1,18 +1,18 @@
-import type App from '../../app';
 import CreateElement from '../create-element';
-import { main, div, button } from '../../utils/tag-functions';
-import data from '../../data/wordCollectionLevel1.json';
-import { type DataJson, type CurrentWord } from '../../types/interfaces';
+import { div, button } from '../../utils/tag-functions';
+import type { DataJson, CurrentWord, Word } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
-import { isNull } from '../../utils/functions';
+import { getData, isNull } from '../../utils/functions';
 import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
+import Levels from '../level-difficulties/level-difficulties';
+import type { LevelsData } from '../../types/types';
+import type App from '../../app';
+import PuzzleItem from './puzzle-item';
 
 export default class Game extends CreateElement {
   private app: App;
-
-  private container = main({ className: 'game' });
 
   private puzzle = div({
     className: 'game__puzzle-field',
@@ -38,7 +38,7 @@ export default class Game extends CreateElement {
     onclick: () => this.checkRowPhrase(),
   });
 
-  private data: DataJson;
+  private data: DataJson | undefined;
 
   private currentSentence: string = '';
 
@@ -46,37 +46,56 @@ export default class Game extends CreateElement {
 
   private hints = new Hints();
 
-  private currentRound: CurrentWord = { round: 0, word: 0 };
+  private currentRound: CurrentWord;
 
-  constructor(app: App) {
-    super({ tag: 'div', className: 'game__fields' });
-    this.app = app;
-    this.data = data;
-    this.currentSentence =
-      this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExample.toLowerCase();
+  private gameField: CreateElement = div({ className: 'game__fields' });
+
+  constructor(app: App, round: CurrentWord = { level: 1, round: 0, word: 0 }) {
+    super({ tag: 'main', className: 'game' });
+    this.currentRound = round;
     this.compliteBtn.setProperty('display', 'block');
+    this.loadData(this.currentRound.level);
+    this.app = app;
+  }
+
+  private async loadData(level: LevelsData): Promise<void> {
+    this.data = await getData(level);
+    this.createGame();
+  }
+
+  private myData(): Word {
+    return isNull(this.data).rounds[this.currentRound.round].words[this.currentRound.word];
   }
 
   public createGame(): void {
-    const sentence = this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExampleTranslate;
-    const path = this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample;
+    // Current-sentence
+    this.currentSentence = this.myData().textExample.toLowerCase();
+    // Levels
+    this.appendChildren([
+      new Levels(this.app, this.currentRound.level, this.currentRound.round, isNull(this.data?.rounds.length)),
+      this.hints,
+      this.gameField,
+    ]);
+    // Hints
+    const sentence = this.myData().textExampleTranslate;
+    const path = this.myData().audioExample;
     this.hints.createHints(sentence, path);
-    this.container.appendChildren([this.hints, this]);
-    this.app.elementAppend(this.container);
+    // Buttons
     const cover = div({ className: 'game__buttons' }, this.compliteBtn, this.countinueBtn, this.checkBtn);
-    this.appendChildren([this.mainFild, this.puzzle, cover]);
+    this.gameField.appendChildren([this.mainFild, this.puzzle, cover]);
+    // Active game
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
   }
 
-  private countinue(): void {
+  private countinue = (): void => {
     this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
     this.hints.afterRound('countinue');
-    const sentence = this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExampleTranslate;
-    const path = this.data.rounds[this.currentRound.round].words[this.currentRound.word].audioExample;
+    const sentence = this.myData().textExampleTranslate;
+    const path = this.myData().audioExample;
     this.hints.createHints(sentence, path);
     this.countinueBtn.setProperty('display', 'none');
     this.compliteBtn.setProperty('display', 'block');
-  }
+  };
 
   private checkRound(): void {
     if (this.currentRound.word > 8) {
@@ -85,11 +104,10 @@ export default class Game extends CreateElement {
     } else {
       this.currentRound.word += 1;
     }
-    this.currentSentence =
-      this.data.rounds[this.currentRound.round].words[this.currentRound.word].textExample.toLowerCase();
+    this.currentSentence = this.myData().textExample.toLowerCase();
   }
 
-  private checkRowPhrase(): void {
+  private checkRowPhrase = (): void => {
     const words = isNull(this.activeRow?.returnPrase());
     const str: string[] = [];
     const currentStr = this.currentSentence.split(' ');
@@ -102,7 +120,7 @@ export default class Game extends CreateElement {
       }
     }
     if (str.join(' ') === this.currentSentence) this.resetRow();
-  }
+  };
 
   private resetRow(): void {
     isNull(this.activeRow).removeRow();
@@ -127,12 +145,12 @@ export default class Game extends CreateElement {
     else this.checkBtn.setProperty('display', 'none');
   }
 
-  private compliteSentence(): void {
+  private compliteSentence = (): void => {
     this.resetRow();
-  }
+  };
 
   public clearGame(): void {
-    this.container.removeNode();
+    PuzzleItem.removeAllItems();
     this.removeNode();
   }
 }

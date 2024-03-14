@@ -44,3 +44,18 @@
     }
   }
 }
+
+@mixin fadeIn($duration, $scale) {
+  animation: fadeIn $duration ease-out;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale($scale);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

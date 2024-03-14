@@ -10,6 +10,7 @@
   user-select: none;
   padding: 20px 0;
   gap: 20px;
+  @include fadeIn(1s, 0.9);
 
   &__fields {
     display: flex;

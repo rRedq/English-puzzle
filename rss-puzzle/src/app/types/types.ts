@@ -21,4 +21,6 @@ type HintFields<T> = {
   textHint: T;
 };
 
-export { ElementOrNull, Paths, CreateSvg, HintFields };
+type LevelsData = 1 | 2 | 3 | 4 | 5 | 6;
+
+export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData };

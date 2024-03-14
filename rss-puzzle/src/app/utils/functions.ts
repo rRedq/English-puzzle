@@ -1,5 +1,6 @@
 import StorageStatus from '../types/enum';
-import type { StorageHints, StorageAccess } from '../types/interfaces';
+import type { StorageHints, StorageAccess, DataJson } from '../types/interfaces';
+import type { LevelsData } from '../types/types';
 
 function isNull<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -47,11 +48,20 @@ function getNewPosition(column: HTMLElement, posX: number) {
   for (let i = 0; i < puzzles.length; i += 1) {
     const box = puzzles[i].getBoundingClientRect();
     const boxCenterX = box.x + box.height / 2;
-
     if (posX >= boxCenterX) result = puzzles[i];
   }
 
   return result;
 }
 
-export { isNull, setStorage, getStorage, deleteStorage, getNewPosition };
+async function getData(level: LevelsData): Promise<DataJson> {
+  const result = await fetch(
+    `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel${level}.json`
+  )
+    .then((response) => response.json())
+    .then((json) => json)
+    .catch((err) => new Error(err));
+  return result;
+}
+
+export { isNull, setStorage, getStorage, deleteStorage, getNewPosition, getData };

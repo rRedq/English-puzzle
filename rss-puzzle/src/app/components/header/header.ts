@@ -13,12 +13,8 @@ export default class Header extends CreateElement {
     super({ tag: 'header', className: 'header' });
     this.app = elem;
     this.button = button({ className: 'header__btn', textContent: 'Logout' });
-  }
-
-  public startHeader(): CreateElement {
     this.button.addEventListener('click', this.loginOut);
     this.elementAppend(this.button);
-    return this;
   }
 
   private loginOut = (): void => {

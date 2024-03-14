@@ -25,4 +25,10 @@ const p = (props: TagsProps) => new CreateElement<HTMLParagraphElement>({ ...pro
 const main = (props: TagsProps, ...children: ElementOrNull[]) =>
   new CreateElement({ ...props, tag: 'main' }, ...children);
 
-export { label, input, div, span, form, button, h2, p, main };
+const select = (props: TagsProps, ...children: ElementOrNull[]) =>
+  new CreateElement<HTMLSelectElement>({ ...props, tag: 'select' }, ...children);
+
+const option = (props: InputProps, ...children: ElementOrNull[]) =>
+  new CreateElement<HTMLOptionElement>({ ...props, tag: 'option' }, ...children);
+
+export { label, input, div, span, form, button, h2, p, main, select, option };
