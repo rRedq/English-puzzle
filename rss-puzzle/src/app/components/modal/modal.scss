@@ -1,0 +1,28 @@
+@import '../../utils/common-styles.scss';
+
+.modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  @extend %apearAnimation;
+  font-size: 25px;
+
+  background-color: rgba(0, 0, 0, 0.3);
+
+  &__content {
+    background-color: var(--light-1);
+    margin: 45vh auto;
+    padding: 15px;
+    border: 1px solid var(--light-4);
+    max-width: 400px;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    @extend %apearAnimation;
+  }
+}

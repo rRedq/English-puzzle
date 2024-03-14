@@ -3,14 +3,13 @@ import { LevelsData } from '../types/types';
 import { getStorage, setStorage } from './functions';
 import { div, option, p } from './tag-functions';
 
-function createList(parentNode: CreateElement, values: number, marked?: number[]): void {
+function createList(parentNode: CreateElement, values: number, title: 'Level' | 'Round', marked?: number[]): void {
   let index = 1;
 
   while (index < values + 1) {
     const value = option({ className: 'level__option', textContent: `${index}`, value: `${index}` });
-    if (marked) {
-      if (marked.includes(index - 1)) value.addClass('level__option-marked');
-    }
+    if (marked && marked.includes(index - 1) && title === 'Round') value.addClass('level__option-marked');
+    else if (marked && marked.includes(index) && title === 'Level') value.addClass('level__option-marked');
     parentNode.elementAppend(value);
     index += 1;
   }
@@ -24,7 +23,7 @@ function createContainer(
   selected?: string,
   level?: number[]
 ): void {
-  createList(selectList, length, level);
+  createList(selectList, length, title, level);
   const list = selectList;
   if (selected) (list.getNode() as HTMLSelectElement).value = selected;
   const text = p({ className: 'level__text', textContent: `${title}` });

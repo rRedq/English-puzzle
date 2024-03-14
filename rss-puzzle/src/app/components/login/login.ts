@@ -4,6 +4,7 @@ import LoginInput from './login-input';
 import { setStorage } from '../../utils/functions';
 import type App from '../../app';
 import './login.scss';
+import { StorageAccess } from '../../types/interfaces';
 
 export default class Login extends CreateElement {
   private firstField: LoginInput = new LoginInput(
@@ -43,7 +44,7 @@ export default class Login extends CreateElement {
   private accessCheck = (e: Event): void => {
     e.preventDefault();
     if (this.firstField.getAccess() && this.secondField.getAccess()) {
-      setStorage('access', {
+      setStorage<StorageAccess>('access', {
         firstName: this.firstField.getValue(),
         surName: this.secondField.getValue(),
       });

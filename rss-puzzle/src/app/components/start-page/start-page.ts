@@ -3,7 +3,7 @@ import CreateElement from '../create-element';
 import { button, div, h2, p } from '../../utils/tag-functions';
 import './start-page.scss';
 import { getStorage } from '../../utils/functions';
-import { type StorageAccess } from '../../types/interfaces';
+import { CurrentWord, type StorageAccess } from '../../types/interfaces';
 
 export default class StartPage extends CreateElement {
   private app: App;
@@ -36,6 +36,8 @@ export default class StartPage extends CreateElement {
   private closeStartPage(): void {
     this.button.removeEventListener('click', this.closeStartPage);
     this.removeNode();
-    this.app.startGame();
+    const lastGame = getStorage<CurrentWord>('lastGame');
+    if (lastGame) this.app.startGame(lastGame, true);
+    else this.app.startGame(lastGame);
   }
 }

@@ -27,15 +27,30 @@ function setStorage<T>(id: string, value: T): void {
   localStorage.setItem('rredq', JSON.stringify([...obj]));
 }
 
-function getProgressStorage(level: LevelsData): number[] | undefined {
+function getStorage<T>(id: string): T | undefined {
+  checkId(id);
+  const storage = localStorage.getItem('rredq');
+  if (!storage) return undefined;
+  const result = new Map<string, T>(JSON.parse(storage)).get(id);
+  if (!result) return undefined;
+
+  return result;
+}
+
+function deleteStorage() {
+  localStorage.clear();
+}
+
+function getProgressStorage(level: LevelsData): number[] {
   const prevObj = localStorage.getItem('rredq-progress');
-  if (!prevObj) return undefined;
+  if (!prevObj) return [];
 
   const obj = new Map<string, Map<LevelsData, number[]>>(JSON.parse(prevObj));
   const newObj = new Map<LevelsData, number[]>(obj.get('progress'));
 
-  let result;
-  if (newObj.has(level)) result = newObj.get(level);
+  let result: number[] = [];
+  const value = newObj.get(level);
+  if (value) result = value;
 
   return result;
 }
@@ -68,20 +83,6 @@ function setProgressStorage(level: LevelsData, round: number[]): void {
 
   const serialized = Array.from(obj, ([key, value]) => [key, Array.from(value)]);
   localStorage.setItem('rredq-progress', JSON.stringify(serialized));
-}
-
-function getStorage<T>(id: string): T | undefined {
-  checkId(id);
-  const storage = localStorage.getItem('rredq');
-  if (!storage) return undefined;
-  const result = new Map<string, T>(JSON.parse(storage)).get(id);
-  if (!result) return undefined;
-
-  return result;
-}
-
-function deleteStorage() {
-  localStorage.clear();
 }
 
 function getNewPosition(column: HTMLElement, posX: number) {

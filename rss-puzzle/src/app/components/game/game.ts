@@ -3,7 +3,7 @@ import { div, button } from '../../utils/tag-functions';
 import type { DataJson, CurrentWord, Word } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
-import { getData, getProgressStorage, isNull, setProgressStorage } from '../../utils/functions';
+import { getData, getProgressStorage, isNull, setProgressStorage, setStorage } from '../../utils/functions';
 import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
 import Levels from '../level-difficulties/level-difficulties';
@@ -101,28 +101,22 @@ export default class Game extends CreateElement {
 
   private checkRound(): void {
     if (this.currentRound.word > 8) {
+      const currentLength = getProgressStorage(this.currentRound.level).length;
+      const currentLevel = this.currentRound.level;
       if (this.currentRound.round + 1 < isNull(this.data).rounds.length) {
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
         this.currentRound.round += 1;
       } else if (this.currentRound.level + 1 < 7) {
-        levelUp(
-          isNull(this.data).roundsCount,
-          isNull(getProgressStorage(this.currentRound.level)).length,
-          this.currentRound.level
-        );
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
         this.currentRound.level += 1;
         this.currentRound.round = 0;
       } else {
-        levelUp(
-          isNull(this.data).roundsCount,
-          isNull(getProgressStorage(this.currentRound.level)).length,
-          this.currentRound.level
-        );
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
         this.currentRound.level = 1;
         this.currentRound.round = 0;
       }
+      levelUp(isNull(this.data).roundsCount, currentLength, currentLevel);
+      setStorage<CurrentWord>('lastGame', { level: this.currentRound.level, round: this.currentRound.round, word: 0 });
       this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
     } else this.currentRound.word += 1;
     this.currentSentence = this.myData().textExample.toLowerCase();
