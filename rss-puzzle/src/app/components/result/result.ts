@@ -4,6 +4,7 @@ import { LevelsData } from '../../types/types';
 import { getData, getStorage, isNull } from '../../utils/functions';
 import { button, div, p, span } from '../../utils/tag-functions';
 import CreateElement from '../create-element';
+import Pronounce from '../pronounce/pronounce';
 import './result.scss';
 
 export default class Result extends CreateElement {
@@ -43,14 +44,18 @@ export default class Result extends CreateElement {
 
     this.stats.appendChildren([know, unknow, this.countinueBtn]);
 
-    this.result.known.forEach((knowWord) => {
-      const elem = p({ textContent: `${this.data?.rounds[this.result.round].words[knowWord].textExample}` });
-      know.elementAppend(elem);
-    });
+    this.createContainer(this.result.known, know);
+    this.createContainer(this.result.unknown, unknow);
+  }
 
-    this.result.unknown.forEach((unknownWord) => {
-      const elem = p({ textContent: `${this.data?.rounds[this.result.round].words[unknownWord].textExample}` });
-      unknow.elementAppend(elem);
+  private createContainer(words: number[], parent: CreateElement) {
+    words.forEach((word) => {
+      const container = div({ className: 'result__container' });
+      const pronounce = new Pronounce(isNull(this.data?.rounds[this.result.round].words[word].audioExample));
+      const audio = div({ className: 'result__audio' }, pronounce);
+      const text = p({ textContent: `${this.data?.rounds[this.result.round].words[word].textExample}` });
+      container.appendChildren([audio, text]);
+      parent.elementAppend(container);
     });
   }
 

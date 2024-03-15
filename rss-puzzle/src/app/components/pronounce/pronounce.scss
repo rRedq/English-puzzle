@@ -1,0 +1,15 @@
+@import '../../utils/common-styles.scss';
+
+.pronounce {
+  max-width: 35px;
+  max-height: 35px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-image: url('../../assets/hints/sound.png');
+  @extend %imgBackground;
+  margin: 0 auto;
+  &:hover {
+    cursor: pointer;
+  }
+}

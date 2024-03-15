@@ -24,6 +24,14 @@
   &__fade-out {
     @include fadeOut(1s);
   }
+  &__container {
+    display: flex;
+  }
+  &__audio {
+    width: 20px;
+    height: 20px;
+  }
+
   &__sucess,
   &__fail {
     padding: 5px;
