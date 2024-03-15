@@ -50,6 +50,15 @@ interface CurrentWord {
   word: number;
 }
 
+interface StorageWords extends CurrentWord {
+  isKnown: 'know' | 'unknown';
+}
+
+interface IsKnownWords extends Omit<CurrentWord, 'word'> {
+  known: number[];
+  unknown: number[];
+}
+
 interface StorageAccess {
   firstName: string;
   surName: string;
@@ -75,4 +84,6 @@ export {
   StorageHints,
   Word,
   StorageProgress,
+  StorageWords,
+  IsKnownWords,
 };

@@ -24,4 +24,15 @@
   &__fade-out {
     @include fadeOut(1s);
   }
+  &__sucess,
+  &__fail {
+    padding: 5px;
+    border-radius: 7px;
+  }
+  &__sucess {
+    background: var(--green);
+  }
+  &__fail {
+    background: var(--red);
+  }
 }

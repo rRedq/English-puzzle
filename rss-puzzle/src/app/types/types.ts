@@ -1,5 +1,4 @@
 import type CreateElement from '../components/create-element';
-import { StorageHints, StorageAccess, StorageProgress } from './interfaces';
 
 type ElementOrNull = CreateElement | null;
 
@@ -24,6 +23,6 @@ type HintFields<T> = {
 
 type LevelsData = 1 | 2 | 3 | 4 | 5 | 6;
 
-type Storage = StorageHints | StorageAccess | StorageProgress;
+type StorageKeys = 'result' | 'progress';
 
-export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData, Storage };
+export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData, StorageKeys };

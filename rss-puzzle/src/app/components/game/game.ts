@@ -4,6 +4,7 @@ import type { DataJson, CurrentWord, Word } from '../../types/interfaces';
 import './game.scss';
 import ActiveGame from './active-game';
 import { getData, getProgressStorage, isNull, setProgressStorage, setStorage } from '../../utils/functions';
+import { deleteStorageByKey, setStorageIsKnown } from '../../utils/storage-cover';
 import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
 import Levels from '../level-difficulties/level-difficulties';
@@ -63,6 +64,7 @@ export default class Game extends CreateElement {
     this.compliteBtn.setProperty('display', 'block');
     this.loadData(this.currentRound.level);
     this.app = app;
+    deleteStorageByKey('result');
   }
 
   private async loadData(level: LevelsData): Promise<void> {
@@ -146,7 +148,11 @@ export default class Game extends CreateElement {
         else (words[i].firstChild as SVGElement).style.fill = 'red';
       }
     }
-    if (str.join(' ') === this.currentSentence) this.resetRow();
+    if (str.join(' ') === this.currentSentence) {
+      const { level, round, word } = this.currentRound;
+      setStorageIsKnown({ level, round, word, isKnown: 'know' });
+      this.resetRow();
+    }
   };
 
   private resetRow(): void {
@@ -173,6 +179,8 @@ export default class Game extends CreateElement {
   }
 
   private compliteSentence = (): void => {
+    const { level, round, word } = this.currentRound;
+    setStorageIsKnown({ level, round, word, isKnown: 'unknown' });
     this.resetRow();
   };
 

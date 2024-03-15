@@ -3,6 +3,7 @@ enum StorageStatus {
   hints = 'hints',
   progress = 'progress',
   lastGame = 'lastGame',
+  result = 'result',
 }
 
 export default StorageStatus;
