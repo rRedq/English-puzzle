@@ -36,13 +36,22 @@ export default class Result extends CreateElement {
   }
 
   private createResults() {
+    const source = isNull(this.data).rounds[this.result.round].levelData;
+    const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/images/${source.cutSrc}`;
+    const art = div({ className: 'result__art' });
+    art.getNode().style.backgroundImage = `url(${link})`;
+    const author = div({
+      className: 'result__author',
+      textContent: `${source.author} - ${source.name} (${source.year})`,
+    });
+
     const know = div({ className: 'result__field' });
     const unknow = div({ className: 'result__field' });
 
-    know.elementAppend(span({ className: 'result__fail', textContent: "I don't know" }));
-    unknow.elementAppend(span({ className: 'result__sucess', textContent: 'I know' }));
+    know.elementAppend(div({ className: 'result__sucess', textContent: 'I know' }));
+    unknow.elementAppend(span({ className: 'result__fail', textContent: "I don't know" }));
 
-    this.stats.appendChildren([know, unknow, this.countinueBtn]);
+    this.stats.appendChildren([art, author, know, unknow, this.countinueBtn]);
 
     this.createContainer(this.result.known, know);
     this.createContainer(this.result.unknown, unknow);
@@ -51,9 +60,9 @@ export default class Result extends CreateElement {
   private createContainer(words: number[], parent: CreateElement) {
     words.forEach((word) => {
       const container = div({ className: 'result__container' });
-      const pronounce = new Pronounce(isNull(this.data?.rounds[this.result.round].words[word].audioExample));
+      const pronounce = new Pronounce(isNull(this.data).rounds[this.result.round].words[word].audioExample);
       const audio = div({ className: 'result__audio' }, pronounce);
-      const text = p({ textContent: `${this.data?.rounds[this.result.round].words[word].textExample}` });
+      const text = p({ textContent: `${isNull(this.data).rounds[this.result.round].words[word].textExample}` });
       container.appendChildren([audio, text]);
       parent.elementAppend(container);
     });
