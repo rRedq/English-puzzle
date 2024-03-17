@@ -9,8 +9,8 @@
     "lint": "eslint . --ext .ts",
     "watch": "webpack serve --open --config ./webpack.config.js --env mode=dev",
     "prepare": "cd .. && husky rss-puzzle/.husky && husky install",
-    "check": "prettier . --check",
-    "fix": "prettier . --write"
+    "ci:format": "prettier . --check",
+    "format": "prettier . --write"
   },
   "repository": {
     "type": "git",
