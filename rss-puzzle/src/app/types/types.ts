@@ -19,6 +19,7 @@ type HintFields<T> = {
   onSound: T;
   soundBtn: T;
   textHint: T;
+  backgroundBtn: T;
 };
 
 type LevelsData = 1 | 2 | 3 | 4 | 5 | 6;

@@ -197,8 +197,10 @@ export default class Game extends CreateElement {
     const recordRow = div({ className: 'game__puzzle-field' });
     const items = this.allRoundImages[this.currentRow];
     items.forEach((item) => {
+      const canv = item.canvas.getNode();
+      canv.style.visibility = 'visible';
       const puzzle = div({ className: item.position }, item.canvas);
-      const cover = div({ className: 'game__item' }, puzzle);
+      const cover = div({ className: 'game__item content' }, puzzle);
       cover.setProperty('width', `${item.width}px`);
       recordRow.elementAppend(cover);
     });

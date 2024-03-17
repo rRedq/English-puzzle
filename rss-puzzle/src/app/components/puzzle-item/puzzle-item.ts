@@ -1,4 +1,6 @@
+import { StorageHints } from '../../types/interfaces';
 import { Position } from '../../types/types';
+import { getStorage } from '../../utils/functions';
 import { div } from '../../utils/tag-functions';
 import CreateElement from '../create-element';
 import type ActiveGame from '../game/active-game';
@@ -15,6 +17,8 @@ export default class PuzzleItem extends CreateElement {
 
   private static dragging: PuzzleItem | undefined;
 
+  private canvas: CreateElement;
+
   constructor(
     elem: ActiveGame,
     parent: CreateElement,
@@ -25,15 +29,22 @@ export default class PuzzleItem extends CreateElement {
   ) {
     super({
       tag: 'div',
-      className: 'game__item',
+      className: `game__item content`,
     });
     this.childRoot = elem;
     this.parentRoot = parent;
     this.currentPlace = parent;
-    canvas.addClass('canvas');
+    this.canvas = canvas;
+    this.canvas.addClass('canvas');
     const puzzle = div({ className: `${position}`, textContent: word }, canvas);
     this.elementAppend(puzzle);
     this.setProperty('width', `${width}px`);
+    this.initItem();
+  }
+
+  private initItem(): void {
+    const statuses = getStorage<StorageHints>('hints');
+    if (!statuses?.isBackground) this.canvas.getNode().style.visibility = 'hidden';
     PuzzleItem.nodes.push(this);
     this.setDragable();
     this.setListeners();
@@ -85,8 +96,12 @@ export default class PuzzleItem extends CreateElement {
     }
   }
 
-  public static getRow(): PuzzleItem[] {
-    return PuzzleItem.nodes;
+  public static getRow(): CreateElement[] {
+    const puzzles: CreateElement[] = [];
+    PuzzleItem.nodes.forEach((puzzle) => {
+      puzzles.push(puzzle.canvas);
+    });
+    return puzzles;
   }
 
   public static removeAllItems(): void {

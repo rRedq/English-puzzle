@@ -67,6 +67,7 @@ interface StorageAccess {
 interface StorageHints {
   isText: boolean;
   isSound: boolean;
+  isBackground: boolean;
 }
 
 interface StorageProgress {
