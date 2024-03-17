@@ -25,4 +25,13 @@ type LevelsData = 1 | 2 | 3 | 4 | 5 | 6;
 
 type StorageKeys = 'result' | 'progress';
 
-export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData, StorageKeys };
+type CanvasCover = {
+  width: number;
+  canvas: CreateElement<HTMLCanvasElement>;
+  word: string;
+  position: Position;
+};
+
+type Position = 'first' | 'mid' | 'last';
+
+export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData, StorageKeys, CanvasCover, Position };

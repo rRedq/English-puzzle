@@ -1,0 +1,52 @@
+.game__item {
+  overflow: visible;
+  box-sizing: border-box;
+  position: relative;
+  color: red;
+  height: 50px;
+  z-index: 2;
+  filter: drop-shadow(0 0 2px var(--blue)) drop-shadow(0 0 2px var(--blue));
+}
+.canvas {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 1;
+  // visibility: hidden;
+}
+.mid,
+.first,
+.last {
+  width: calc(100% + 10px);
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: beige;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  --gap: 1.4px;
+  --radius: 10px;
+}
+
+.first {
+  mask:
+    radial-gradient(calc(var(--radius)) at 50% calc(0% - var(--gap)), #ffffff, #f9f9f9) left /
+      calc(100% - var(--radius)) 100% no-repeat,
+    radial-gradient(var(--radius) at top 50% right var(--radius), #000 100%, #0000);
+}
+.mid {
+  mask:
+    radial-gradient(calc(var(--radius) + var(--gap)) at calc(0% + var(--gap)) 50%, #0000 100%, #000) left /
+      calc(100% - var(--radius)) 100% no-repeat,
+    radial-gradient(var(--radius) at top 50% right var(--radius), #000 100%, #0000);
+}
+.last {
+  width: 100%;
+  mask: radial-gradient(calc(var(--radius) + var(--gap)) at calc(0% - var(--gap)) 50%, #0000 100%, #000);
+}

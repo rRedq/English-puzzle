@@ -43,26 +43,6 @@
     box-sizing: border-box;
   }
 
-  &__item {
-    max-height: 50px;
-    animation-name: apear;
-    animation-duration: 0.7s;
-    &:hover {
-      cursor: pointer;
-    }
-
-    @keyframes apear {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    svg {
-      height: 50px;
-    }
-  }
   &__cover {
     min-width: 60px;
     min-height: 40px;

@@ -5,13 +5,13 @@ import './game.scss';
 import ActiveGame from './active-game';
 import { getData, getProgressStorage, isNull, setProgressStorage, setStorage } from '../../utils/functions';
 import { deleteStorageByKey, setStorageIsKnown } from '../../utils/storage-cover';
-import createSvg from '../../utils/set-svg';
 import Hints from '../hints/hints';
 import Levels from '../level-difficulties/level-difficulties';
-import type { LevelsData } from '../../types/types';
+import type { CanvasCover, LevelsData } from '../../types/types';
 import type App from '../../app';
-import PuzzleItem from './puzzle-item';
+import PuzzleItem from '../puzzle-item/puzzle-item';
 import { levelUp } from '../../utils/helper-functions';
+import cut from '../../utils/cut-canvas';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -48,8 +48,6 @@ export default class Game extends CreateElement {
 
   private data: DataJson | undefined;
 
-  private currentSentence: string = '';
-
   private activeRow: ActiveGame | undefined;
 
   private hints = new Hints();
@@ -57,6 +55,12 @@ export default class Game extends CreateElement {
   private currentRound: CurrentWord;
 
   private gameField: CreateElement = div({ className: 'game__fields' });
+
+  private allRoundSentences: string[] = [];
+
+  private allRoundImages: CanvasCover[][] = [[]];
+
+  private currentRow = 0;
 
   constructor(app: App, round: CurrentWord = { level: 1, round: 0, word: 0 }) {
     super({ tag: 'main', className: 'game' });
@@ -69,7 +73,21 @@ export default class Game extends CreateElement {
 
   private async loadData(level: LevelsData): Promise<void> {
     this.data = await getData(level);
-    this.createGame();
+    this.setImage();
+  }
+
+  private setImage() {
+    const source = isNull(this.data).rounds[this.currentRound.round];
+    const allSentence: string[] = [];
+    source.words.forEach((sentence) => {
+      allSentence.push(sentence.textExample);
+    });
+    this.allRoundSentences = allSentence;
+    const imgSrc = source.levelData.imageSrc;
+    cut(allSentence, imgSrc).then((result: CanvasCover[][]) => {
+      this.allRoundImages = result;
+      this.createGame();
+    });
   }
 
   private myData(): Word {
@@ -78,7 +96,8 @@ export default class Game extends CreateElement {
 
   public createGame(): void {
     // Current-sentence
-    this.currentSentence = this.myData().textExample.toLowerCase();
+    this.allRoundSentences[this.currentRound.round] = this.myData().textExample.toLowerCase();
+
     // Levels
     this.appendChildren([
       new Levels(this.app, this.currentRound.level, this.currentRound.round, isNull(this.data?.rounds.length)),
@@ -99,12 +118,27 @@ export default class Game extends CreateElement {
     );
     this.gameField.appendChildren([this.mainFild, this.puzzle, cover]);
     // Active game
-    this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
+    this.activeRow = new ActiveGame(
+      this.mainFild,
+      this.allRoundSentences[this.currentRound.round],
+      this.puzzle,
+      this,
+      this.allRoundImages[this.currentRow]
+    );
   }
 
   private countinue = (): void => {
     this.checkRound();
-    this.activeRow = new ActiveGame(this.mainFild, this.currentSentence, this.puzzle, this);
+    if (this.currentRow === 9) this.currentRow = 0;
+    else this.currentRow += 1;
+
+    this.activeRow = new ActiveGame(
+      this.mainFild,
+      this.allRoundSentences[this.currentRound.round],
+      this.puzzle,
+      this,
+      this.allRoundImages[this.currentRow]
+    );
     this.hints.afterRound('countinue');
     const sentence = this.myData().textExampleTranslate;
     const path = this.myData().audioExample;
@@ -133,22 +167,24 @@ export default class Game extends CreateElement {
       setStorage<CurrentWord>('lastGame', { level: this.currentRound.level, round: this.currentRound.round, word: 0 });
       if (isResult) this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });
     } else this.currentRound.word += 1;
-    this.currentSentence = this.myData().textExample.toLowerCase();
+    this.allRoundSentences[this.currentRound.round] = this.myData().textExample.toLowerCase();
   }
 
   private checkRowPhrase = (): void => {
     const words = isNull(this.activeRow?.returnPrase());
+
     const str: string[] = [];
-    const currentStr = this.currentSentence.split(' ');
+    const currentStr = this.allRoundSentences[this.currentRound.round].split(' ');
     for (let i = 0; i < words.length; i += 1) {
-      const word = words[i].textContent;
+      const word = isNull(words[i].firstChild).textContent;
       if (word) {
         str.push(word);
-        if (currentStr[i] === word) (words[i].firstChild as SVGElement).style.fill = 'green';
-        else (words[i].firstChild as SVGElement).style.fill = 'red';
+        if (currentStr[i] === word)
+          (words[i] as HTMLElement).style.filter = 'drop-shadow(0 0 2px green) drop-shadow(0 0 2px green)';
+        else (words[i] as HTMLElement).style.filter = 'drop-shadow(0 0 1px red) drop-shadow(0 0 2px red)';
       }
     }
-    if (str.join(' ') === this.currentSentence) {
+    if (str.join(' ') === this.allRoundSentences[this.currentRound.round]) {
       const { level, round, word } = this.currentRound;
       setStorageIsKnown({ level, round, word, isKnown: 'know' });
       this.resetRow();
@@ -159,11 +195,11 @@ export default class Game extends CreateElement {
     isNull(this.activeRow).removeRow();
     this.hints.afterRound('check');
     const recordRow = div({ className: 'game__puzzle-field' });
-    const svgs = createSvg(this.currentSentence);
-    svgs.forEach((item) => {
-      const cover = div({ className: 'game__item' });
+    const items = this.allRoundImages[this.currentRow];
+    items.forEach((item) => {
+      const puzzle = div({ className: item.position }, item.canvas);
+      const cover = div({ className: 'game__item' }, puzzle);
       cover.setProperty('width', `${item.width}px`);
-      cover.getNode().append(item.svg);
       recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);

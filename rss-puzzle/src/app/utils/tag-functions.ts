@@ -31,4 +31,6 @@ const select = (props: TagsProps, ...children: ElementOrNull[]) =>
 const option = (props: InputProps, ...children: ElementOrNull[]) =>
   new CreateElement<HTMLOptionElement>({ ...props, tag: 'option' }, ...children);
 
-export { label, input, div, span, form, button, h2, p, main, select, option };
+const canvas = (props: TagsProps) => new CreateElement<HTMLCanvasElement>({ ...props, tag: 'canvas' });
+
+export { label, input, div, span, form, button, h2, p, main, select, option, canvas };

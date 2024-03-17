@@ -1,10 +1,9 @@
 import CreateElement from '../create-element';
-import PuzzleItem from './puzzle-item';
+import PuzzleItem from '../puzzle-item/puzzle-item';
 import type Game from './game';
 import { getNewPosition, isNull } from '../../utils/functions';
 import { div } from '../../utils/tag-functions';
-import createSvg from '../../utils/set-svg';
-import { CreateSvg } from '../../types/types';
+import { CanvasCover } from '../../types/types';
 
 export default class ActiveGame extends CreateElement {
   private currentString: string;
@@ -13,20 +12,27 @@ export default class ActiveGame extends CreateElement {
 
   private root: Game;
 
-  constructor(main: CreateElement, str: string, puzzleField: CreateElement, root: Game) {
+  private canvases: CanvasCover[];
+
+  constructor(main: CreateElement, str: string, puzzleField: CreateElement, root: Game, canvases: CanvasCover[]) {
     super({ tag: 'div', className: 'game__puzzle-field' });
     main.elementAppend(this);
     this.root = root;
     this.currentString = str;
     this.puzzle = puzzleField;
+    this.canvases = canvases;
+
     this.createFields();
   }
 
-  private createFields() {
-    const wordArray = createSvg(this.currentString);
-    const sortedArray = wordArray.sort(() => Math.random() - 0.5);
-    sortedArray.forEach((item: CreateSvg) => {
-      const elem = div({ className: 'game__cover' }, new PuzzleItem(this, this.puzzle, item.svg, item.width));
+  private createFields(): void {
+    const canvases = [...this.canvases];
+    const sortedArray = canvases.sort(() => Math.random() - 0.5);
+    sortedArray.forEach((item: CanvasCover) => {
+      const elem = div(
+        { className: 'game__cover' },
+        new PuzzleItem(this, this.puzzle, item.canvas, item.width, item.position, item.word)
+      );
       this.puzzle.elementAppend(elem);
     });
 
