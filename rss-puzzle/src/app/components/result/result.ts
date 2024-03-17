@@ -1,7 +1,6 @@
 import type App from '../../app';
 import { DataJson, IsKnownWords, CurrentWord } from '../../types/interfaces';
-import { LevelsData } from '../../types/types';
-import { getData, getStorage, isNull } from '../../utils/functions';
+import { getStorage, isNull } from '../../utils/functions';
 import { button, div, p, span } from '../../utils/tag-functions';
 import CreateElement from '../create-element';
 import Pronounce from '../pronounce/pronounce';
@@ -10,33 +9,29 @@ import './result.scss';
 export default class Result extends CreateElement {
   private app: App;
 
-  private data: DataJson | undefined;
+  private data: DataJson;
 
   private result: IsKnownWords;
 
   private countinueBtn = button({
     className: 'result__continue',
     textContent: 'Continue',
-    onclick: () => this.countinueClick(),
   });
 
   private stats = div({ className: 'result__stat' });
 
-  constructor(app: App) {
+  constructor(app: App, data: DataJson) {
     super({ tag: 'div', className: 'result' });
     this.app = app;
+    this.data = data;
     this.elementAppend(this.stats);
     this.result = isNull(getStorage<IsKnownWords>('result'));
-    this.loadData(this.result.level);
-  }
-
-  private async loadData(level: LevelsData): Promise<void> {
-    this.data = await getData(level);
     this.createResults();
+    this.addEventListener('click', this.countinueClick);
   }
 
   private createResults() {
-    const source = isNull(this.data).rounds[this.result.round].levelData;
+    const source = this.data.rounds[this.result.round].levelData;
     const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/images/${source.cutSrc}`;
     const art = div({ className: 'result__art' });
     art.getNode().style.backgroundImage = `url(${link})`;
@@ -60,9 +55,9 @@ export default class Result extends CreateElement {
   private createContainer(words: number[], parent: CreateElement) {
     words.forEach((word) => {
       const container = div({ className: 'result__container' });
-      const pronounce = new Pronounce(isNull(this.data).rounds[this.result.round].words[word].audioExample);
+      const pronounce = new Pronounce(this.data.rounds[this.result.round].words[word].audioExample);
       const audio = div({ className: 'result__audio' }, pronounce);
-      const text = p({ textContent: `${isNull(this.data).rounds[this.result.round].words[word].textExample}` });
+      const text = p({ textContent: `${this.data.rounds[this.result.round].words[word].textExample}` });
       container.appendChildren([audio, text]);
       parent.elementAppend(container);
     });
@@ -70,6 +65,7 @@ export default class Result extends CreateElement {
 
   private countinueClick = () => {
     this.addClass('result__fade-out');
+    this.removeEventListener('click', this.countinueClick);
     setTimeout(() => {
       this.removeNode();
       const game = getStorage<CurrentWord>('lastGame');

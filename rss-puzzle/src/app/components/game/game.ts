@@ -242,7 +242,7 @@ export default class Game extends CreateElement {
   private clickResult = (): void => {
     this.checkRound(false);
     this.clearGame();
-    this.app.startResult();
+    this.app.startResult(isNull(this.data));
   };
 
   public clearGame(): void {
