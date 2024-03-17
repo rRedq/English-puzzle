@@ -25,6 +25,9 @@
     width: 900px;
     background-color: var(--light-1);
     border-radius: 7px;
+    @media screen and (width < 1000px) {
+      width: 700px;
+    }
   }
 
   &__main-field {

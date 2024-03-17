@@ -191,6 +191,20 @@ export default class Game extends CreateElement {
     }
   };
 
+  private showFinalImage(): void {
+    const main = this.mainFild.getChildren();
+    for (let i = 0; i < main.length; i += 1) {
+      const row = main[i].childNodes;
+      for (let j = 0; j < row.length; j += 1) {
+        (row[j] as HTMLElement).classList.remove('content');
+        isNull(row[j].firstChild as HTMLElement).style.fontSize = '0px';
+      }
+    }
+    this.puzzle.removeChildren();
+    const source = isNull(this.data).rounds[this.currentRound.round].levelData;
+    this.puzzle.elementAppend(div({ textContent: `${source.author} - ${source.name} (${source.year})` }));
+  }
+
   private resetRow(): void {
     isNull(this.activeRow).removeRow();
     this.hints.afterRound('check');
@@ -199,14 +213,17 @@ export default class Game extends CreateElement {
     items.forEach((item) => {
       const canv = item.canvas.getNode();
       canv.style.visibility = 'visible';
-      const puzzle = div({ className: item.position }, item.canvas);
+      const puzzle = div({ className: item.position, textContent: item.word }, item.canvas);
       const cover = div({ className: 'game__item content' }, puzzle);
       cover.setProperty('width', `${item.width}px`);
       recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);
     this.setVisibleCheckBtn(false);
-    if (this.currentRound.word === 9) this.resultBtn.setProperty('display', 'block');
+    if (this.currentRound.word === 9) {
+      this.resultBtn.setProperty('display', 'block');
+      this.showFinalImage();
+    }
     this.compliteBtn.setProperty('display', 'none');
     this.countinueBtn.setProperty('display', 'block');
   }

@@ -1,28 +1,6 @@
-import CreateElement from '../components/create-element';
 import { CanvasCover, Position } from '../types/types';
 import { isNull } from './functions';
 import { canvas } from './tag-functions';
-
-function setText(word: string, part: CreateElement<HTMLCanvasElement>, data: ImageData) {
-  const partCanvas = part;
-
-  const partCtx = isNull(partCanvas.getNode().getContext('2d'));
-  partCtx.putImageData(data, 0, 0);
-
-  partCtx.font = 'bold 20px Ashar';
-  partCtx.textAlign = 'center';
-  partCtx.textBaseline = 'middle';
-  partCtx.fillStyle = '#f6f2f6';
-
-  const text = word;
-  const x = partCanvas.getNode().width / 2;
-  const y = partCanvas.getNode().height / 2;
-
-  partCtx.fillText(text, x, y);
-  partCtx.lineWidth = 0.8;
-  partCtx.strokeStyle = '#f6f2f6';
-  partCtx.strokeText(text, x, y);
-}
 
 function createCanvas(
   param: HTMLCanvasElement,
@@ -52,7 +30,8 @@ function createCanvas(
       partCanvas.getNode().width = width;
       if (!(words[j] === words[words.length - 1])) width -= 10;
       partCanvas.getNode().height = 50;
-      setText(words[j], partCanvas, imageData);
+      const partCtx = isNull(partCanvas.getNode().getContext('2d'));
+      partCtx.putImageData(imageData, 0, 0);
       let position: Position;
       if (words[j] === words[0]) position = 'first';
       else if (words[j] === words[words.length - 1]) position = 'last';

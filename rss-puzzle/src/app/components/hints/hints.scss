@@ -10,13 +10,20 @@
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
+  @media screen and (width < 1000px) {
+    width: 700px;
+  }
 
   &__cover {
     width: 750px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    @media screen and (width < 1000px) {
+      width: 700px;
+    }
   }
+
   &__text {
     text-align: center;
     font-size: 24px;
@@ -94,5 +101,14 @@
   }
   &__background-btn {
     background-image: url('../../assets/hints/background-btn.png');
+  }
+}
+@media screen and (width < 1000px) {
+  .hints {
+    width: 700px;
+
+    &__cover {
+      width: 520px;
+    }
   }
 }

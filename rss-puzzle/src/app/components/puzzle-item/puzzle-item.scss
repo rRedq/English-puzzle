@@ -1,3 +1,5 @@
+@import '../../utils/common-styles.scss';
+
 .game__item {
   overflow: visible;
   box-sizing: border-box;
@@ -20,7 +22,7 @@
   top: 0;
   left: 0;
   position: absolute;
-  z-index: 1;
+  z-index: -1;
 }
 .mid,
 .first,
@@ -30,12 +32,14 @@
   top: 0;
   left: 0;
   background-color: rgb(121, 121, 117);
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 20px;
   font-style: italic;
+
+  z-index: 1;
 
   --gap: 0px;
   --radius: 10px;

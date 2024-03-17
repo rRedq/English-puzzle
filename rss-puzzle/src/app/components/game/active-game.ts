@@ -28,11 +28,15 @@ export default class ActiveGame extends CreateElement {
   private createFields(): void {
     const canvases = [...this.canvases];
     const sortedArray = canvases.sort(() => Math.random() - 0.5);
+
     sortedArray.forEach((item: CanvasCover) => {
+      const pers = (item.width / 880) * 100;
       const elem = div(
         { className: 'game__cover' },
         new PuzzleItem(this, this.puzzle, item.canvas, item.width, item.position, item.word)
       );
+      elem.setProperty('minWidth', `${pers}%`);
+      elem.setProperty('maxWidth', `100%`);
       this.puzzle.elementAppend(elem);
     });
 
@@ -40,7 +44,6 @@ export default class ActiveGame extends CreateElement {
       e.preventDefault();
       const dragging = document.querySelector('.dragging');
       const applyAfter = getNewPosition(this.getNode(), (e as MouseEvent).clientX);
-
       if (applyAfter) applyAfter.insertAdjacentElement('afterend', isNull(dragging));
       else this.getNode().prepend(isNull(dragging));
     });

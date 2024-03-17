@@ -38,13 +38,16 @@ export default class PuzzleItem extends CreateElement {
     this.canvas.addClass('canvas');
     const puzzle = div({ className: `${position}`, textContent: word }, canvas);
     this.elementAppend(puzzle);
-    this.setProperty('width', `${width}px`);
+    const pers = (width / 880) * 100;
+    this.setProperty('minWidth', `${pers}%`);
+    this.setProperty('maxWidth', `${width}px`);
     this.initItem();
   }
 
   private initItem(): void {
     const statuses = getStorage<StorageHints>('hints');
-    if (!statuses?.isBackground) this.canvas.getNode().style.visibility = 'hidden';
+    if (statuses?.isBackground === false) this.canvas.getNode().style.visibility = 'hidden';
+
     PuzzleItem.nodes.push(this);
     this.setDragable();
     this.setListeners();
