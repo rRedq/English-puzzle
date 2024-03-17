@@ -27,7 +27,7 @@ export default class Result extends CreateElement {
     this.elementAppend(this.stats);
     this.result = isNull(getStorage<IsKnownWords>('result'));
     this.createResults();
-    this.addEventListener('click', this.countinueClick);
+    this.countinueBtn.addEventListener('click', this.countinueClick);
   }
 
   private createResults() {
@@ -65,7 +65,7 @@ export default class Result extends CreateElement {
 
   private countinueClick = () => {
     this.addClass('result__fade-out');
-    this.removeEventListener('click', this.countinueClick);
+    this.countinueBtn.removeEventListener('click', this.countinueClick);
     setTimeout(() => {
       this.removeNode();
       const game = getStorage<CurrentWord>('lastGame');

@@ -21,35 +21,33 @@ export default class ActiveGame extends CreateElement {
     this.currentString = str;
     this.puzzle = puzzleField;
     this.canvases = canvases;
-
     this.createFields();
   }
 
   private createFields(): void {
+    this.puzzle.getNode().replaceChildren();
     const canvases = [...this.canvases];
     const sortedArray = canvases.sort(() => Math.random() - 0.5);
 
     sortedArray.forEach((item: CanvasCover) => {
-      const pers = (item.width / 880) * 100;
-      const elem = div(
-        { className: 'game__cover' },
-        new PuzzleItem(this, this.puzzle, item.canvas, item.width, item.position, item.word)
-      );
-      elem.setProperty('minWidth', `${pers}%`);
-      elem.setProperty('maxWidth', `100%`);
-      this.puzzle.elementAppend(elem);
+      this.puzzle.elementAppend(new PuzzleItem(this, this.puzzle, item.canvas, item.width, item.position, item.word));
     });
 
     this.addEventListener('dragover', (e: Event) => {
       e.preventDefault();
       const dragging = document.querySelector('.dragging');
       const applyAfter = getNewPosition(this.getNode(), (e as MouseEvent).clientX);
-      if (applyAfter) applyAfter.insertAdjacentElement('afterend', isNull(dragging));
-      else this.getNode().prepend(isNull(dragging));
-    });
-    this.addEventListener('drop', (e: Event) => {
-      e.preventDefault();
-      if (e.currentTarget === this.getNode()) PuzzleItem.returnDragging()?.switchRootForDragging();
+
+      const cover = div({ className: 'game__cover' });
+      const isParent = dragging?.parentNode === this.puzzle.getNode();
+
+      if (applyAfter) {
+        if (isParent) isNull(dragging).insertAdjacentElement('beforebegin', cover.getNode());
+        applyAfter.insertAdjacentElement('afterend', isNull(dragging));
+      } else {
+        if (isParent) isNull(dragging).insertAdjacentElement('beforebegin', cover.getNode());
+        this.getNode().prepend(isNull(dragging));
+      }
     });
   }
 

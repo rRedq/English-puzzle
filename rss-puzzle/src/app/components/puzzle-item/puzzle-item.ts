@@ -13,10 +13,6 @@ export default class PuzzleItem extends CreateElement {
 
   private parentRoot: CreateElement;
 
-  private currentPlace: CreateElement | ActiveGame;
-
-  private static dragging: PuzzleItem | undefined;
-
   private canvas: CreateElement;
 
   constructor(
@@ -33,14 +29,12 @@ export default class PuzzleItem extends CreateElement {
     });
     this.childRoot = elem;
     this.parentRoot = parent;
-    this.currentPlace = parent;
     this.canvas = canvas;
     this.canvas.addClass('canvas');
     const puzzle = div({ className: `${position}`, textContent: word }, canvas);
     this.elementAppend(puzzle);
-    const pers = (width / 880) * 100;
-    this.setProperty('minWidth', `${pers}%`);
-    this.setProperty('maxWidth', `${width}px`);
+    const pers = (width / 900) * 100;
+    this.setProperty('width', `${pers}%`);
     this.initItem();
   }
 
@@ -55,11 +49,9 @@ export default class PuzzleItem extends CreateElement {
 
   private setListeners(): void {
     this.addEventListener('dragstart', () => {
-      PuzzleItem.dragging = this;
       this.addClass('dragging');
     });
     this.addEventListener('dragend', () => {
-      PuzzleItem.dragging = undefined;
       this.removeClass('dragging');
       this.childRoot.rowItemLengthCheck();
       PuzzleItem.clearClasses();
@@ -67,25 +59,18 @@ export default class PuzzleItem extends CreateElement {
     this.addEventListener('click', this.clickItem);
   }
 
-  public static returnDragging(): PuzzleItem | undefined {
-    return PuzzleItem.dragging;
-  }
-
-  public switchRootForDragging(): void {
-    this.currentPlace = this.childRoot;
-  }
-
   private clickItem = (): void => {
     PuzzleItem.clearClasses();
-    if (this.currentPlace === this.parentRoot) {
-      this.currentPlace = this.childRoot;
-      this.currentPlace.elementAppend(this);
+
+    if (this.getNode().parentNode === this.parentRoot.getNode()) {
+      const cover = div({ className: 'game__cover' });
+      this.getNode().insertAdjacentElement('beforebegin', cover.getNode());
+      this.childRoot.elementAppend(this);
     } else {
-      this.currentPlace = this.parentRoot;
-      const covers = this.currentPlace.getChildren();
+      const covers = this.parentRoot.getChildren();
       for (let i = 0; i < covers.length; i += 1) {
         if (!covers[i].hasChildNodes()) {
-          covers[i].append(this.getNode());
+          this.parentRoot.getNode().replaceChild(this.getNode(), covers[i]);
           break;
         }
       }

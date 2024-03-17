@@ -215,7 +215,8 @@ export default class Game extends CreateElement {
       canv.style.visibility = 'visible';
       const puzzle = div({ className: item.position, textContent: item.word }, item.canvas);
       const cover = div({ className: 'game__item content' }, puzzle);
-      cover.setProperty('width', `${item.width}px`);
+      const pers = (item.width / 900) * 100;
+      cover.setProperty('width', `${pers}%`);
       recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);
