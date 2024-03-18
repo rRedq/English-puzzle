@@ -30,14 +30,18 @@ export default class StartPage extends CreateElement {
     this.greet.textContent(`Hello, ${nameAndSurname?.firstName} ${nameAndSurname?.surName}, nice to meet you!`);
     this.container.appendChildren([this.h2, this.greet, this.text, this.button]);
     this.elementAppend(this.container);
-    this.button.addEventListener('click', this.closeStartPage.bind(this));
+    this.button.addEventListener('click', this.closeStartPage);
   }
 
-  private closeStartPage(): void {
+  private closeStartPage = (): void => {
     this.button.removeEventListener('click', this.closeStartPage);
-    this.removeNode();
-    const lastGame = getStorage<CurrentWord>('lastGame');
-    if (lastGame) this.app.startGame(lastGame, true);
-    else this.app.startGame(lastGame);
-  }
+    this.addClass('start-page__close');
+
+    setTimeout(() => {
+      this.removeNode();
+      const lastGame = getStorage<CurrentWord>('lastGame');
+      if (lastGame) this.app.startGame(lastGame, true);
+      else this.app.startGame(lastGame);
+    }, 900);
+  };
 }
