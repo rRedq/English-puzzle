@@ -149,7 +149,6 @@ export default class Game extends CreateElement {
 
   private checkRound(isResult = true): void {
     if (this.currentRound.word > 8) {
-      const currentLength = getProgressStorage(this.currentRound.level).length;
       const currentLevel = this.currentRound.level;
       if (this.currentRound.round + 1 < isNull(this.data).rounds.length) {
         setProgressStorage(this.currentRound.level, [this.currentRound.round]);
@@ -163,6 +162,7 @@ export default class Game extends CreateElement {
         this.currentRound.level = 1;
         this.currentRound.round = 0;
       }
+      const currentLength = getProgressStorage(currentLevel).length;
       levelUp(isNull(this.data).roundsCount, currentLength, currentLevel);
       setStorage<CurrentWord>('lastGame', { level: this.currentRound.level, round: this.currentRound.round, word: 0 });
       if (isResult) this.app.startGame({ level: this.currentRound.level, round: this.currentRound.round, word: 0 });

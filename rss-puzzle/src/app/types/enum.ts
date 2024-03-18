@@ -4,6 +4,7 @@ enum StorageStatus {
   progress = 'progress',
   lastGame = 'lastGame',
   result = 'result',
+  progressLevel = 'progressLevel',
 }
 
 export default StorageStatus;

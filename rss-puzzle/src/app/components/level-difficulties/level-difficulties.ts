@@ -32,7 +32,7 @@ export default class Levels extends CreateElement {
 
   private createLevels() {
     const rounds = getProgressStorage(this.currentLevel);
-    const level = getStorage<LevelsData[]>('progress');
+    const level = getStorage<LevelsData[]>('progressLevel');
     createContainer(this, this.levelSelect, 6, 'Level', this.currentLevel.toString(), level);
     createContainer(this, this.roundSelect, this.roundsCount, 'Round', this.currentRound.toString(), rounds);
   }

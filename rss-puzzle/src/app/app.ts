@@ -2,7 +2,7 @@ import CreateElement from './components/create-element';
 import Login from './components/login/login';
 import Header from './components/header/header';
 import { getStorage } from './utils/functions';
-import StartPage from './components/start-page/start-page';
+// import StartPage from './components/start-page/start-page';
 import Game from './components/game/game';
 import { type StorageAccess, type CurrentWord, DataJson } from './types/interfaces';
 import Modal from './components/modal/modal';
@@ -28,10 +28,10 @@ export default class App extends CreateElement {
   }
 
   public startPage(): void {
-    this.appendChildren([new Header(this), new StartPage(this)]);
+    // this.appendChildren([new Header(this), new StartPage(this)]);
 
-    // this.elementAppend(new Header(this));
-    // this.startGame();
+    this.elementAppend(new Header(this));
+    this.startGame();
   }
 
   public startGame(obj?: CurrentWord, isModal?: boolean): void {

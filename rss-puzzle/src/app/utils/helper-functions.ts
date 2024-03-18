@@ -34,11 +34,11 @@ function createContainer(
 
 function levelUp(maxCount: number, length: number, level: LevelsData) {
   if (maxCount === length) {
-    const levels = getStorage<LevelsData[]>('progress');
+    const levels = getStorage<LevelsData[]>('progressLevel');
     if (levels) {
       const newLevels = new Set([...levels, level]);
-      setStorage<LevelsData[]>('progress', [...newLevels]);
-    } else setStorage<LevelsData[]>('progress', [level]);
+      setStorage<LevelsData[]>('progressLevel', [...newLevels]);
+    } else setStorage<LevelsData[]>('progressLevel', [level]);
   }
 }
 
