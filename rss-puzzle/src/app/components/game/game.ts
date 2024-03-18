@@ -11,7 +11,7 @@ import type { CanvasCover, LevelsData } from '../../types/types';
 import type App from '../../app';
 import PuzzleItem from '../puzzle-item/puzzle-item';
 import { levelUp } from '../../utils/helper-functions';
-import cut from '../../utils/cut-canvas';
+import cutCanvas from '../../utils/cut-canvas';
 
 export default class Game extends CreateElement {
   private app: App;
@@ -84,7 +84,7 @@ export default class Game extends CreateElement {
     });
     this.allRoundSentences = allSentence;
     const imgSrc = source.levelData.imageSrc;
-    cut(allSentence, imgSrc).then((result: CanvasCover[][]) => {
+    cutCanvas(allSentence, imgSrc).then((result: CanvasCover[][]) => {
       this.allRoundImages = result;
       this.createGame();
     });
@@ -192,6 +192,7 @@ export default class Game extends CreateElement {
   };
 
   private showFinalImage(): void {
+    this.puzzle.getNode().replaceChildren();
     const main = this.mainFild.getChildren();
     for (let i = 0; i < main.length; i += 1) {
       const row = main[i].childNodes;
@@ -214,7 +215,7 @@ export default class Game extends CreateElement {
       const canv = item.canvas.getNode();
       canv.style.visibility = 'visible';
       const puzzle = div({ className: item.position, textContent: item.word }, item.canvas);
-      const cover = div({ className: 'game__item' }, puzzle);
+      const cover = div({ className: 'game__item content' }, puzzle);
       const pers = (item.width / 900) * 100;
       cover.setProperty('width', `${pers}%`);
       recordRow.elementAppend(cover);

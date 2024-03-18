@@ -25,7 +25,7 @@ export default class PuzzleItem extends CreateElement {
   ) {
     super({
       tag: 'div',
-      className: `game__item content`,
+      className: `game__item content clickable`,
     });
     this.childRoot = elem;
     this.parentRoot = parent;
