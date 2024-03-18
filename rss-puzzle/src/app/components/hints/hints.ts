@@ -5,6 +5,7 @@ import type { HintFields } from '../../types/types';
 import { getStorage, setStorage } from '../../utils/functions';
 import { type StorageHints } from '../../types/interfaces';
 import PuzzleItem from '../puzzle-item/puzzle-item';
+import Pronounce from '../pronounce/pronounce';
 
 export default class Hints extends CreateElement {
   private sentence: string = '';
@@ -37,9 +38,7 @@ export default class Hints extends CreateElement {
     ]);
     this.textBtn.addEventListener('click', this.clickText);
     this.soundBtn.addEventListener('click', this.clickSound);
-    this.onSound.addEventListener('click', this.onSoundHint);
     this.backgroundBtn.addEventListener('click', this.clickBackground);
-    this.onSound.setAttribute('playing', 'false');
     this.setHintsStatus();
   }
 
@@ -48,23 +47,9 @@ export default class Hints extends CreateElement {
     this.soundPath = path;
     this.cover.removeChildren();
     this.textHint.textContent(this.sentence);
+    this.onSound.elementAppend(new Pronounce(path));
     this.cover.appendChildren([this.onSound, this.textHint]);
   }
-
-  private onSoundHint = () => {
-    const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/${this.soundPath}`;
-    const audio = new Audio(link);
-
-    if (this.onSound.getNode().getAttribute('playing') === 'false') {
-      audio.play();
-      this.onSound.addClass('active-sound');
-      audio.addEventListener('ended', () => {
-        this.onSound.setAttribute('playing', 'false');
-        this.onSound.removeClass('active-sound');
-      });
-      this.onSound.setAttribute('playing', 'true');
-    }
-  };
 
   private clickBackground = (): void => {
     this.backgroundBtn.toggleClass('disable');
@@ -131,9 +116,7 @@ export default class Hints extends CreateElement {
       textBtn: button({
         className: 'hints__text-btn hints__btn',
       }),
-      onSound: button({
-        className: 'hints__pronounce',
-      }),
+      onSound: div({ className: 'hints__audio' }),
       soundBtn: button({
         className: 'hints__sound-btn hints__btn',
       }),

@@ -98,3 +98,10 @@
     }
   }
 }
+@media screen and (width < 900px) {
+  %btn {
+    font-size: 0.9rem;
+    line-height: 1.5rem;
+    padding: 0.6rem 0.8rem;
+  }
+}

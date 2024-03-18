@@ -12,9 +12,13 @@
   z-index: 2;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+  filter: drop-shadow(0 0 2px var(--blue)) drop-shadow(0 0 2px var(--blue));
 }
 .content {
-  filter: drop-shadow(0 0 2px var(--blue)) drop-shadow(0 0 2px var(--blue));
+  // filter: drop-shadow(0 0 2px var(--blue)) drop-shadow(0 0 2px var(--blue));
+  &:hover {
+    cursor: pointer;
+  }
 }
 .canvas {
   width: 100%;
