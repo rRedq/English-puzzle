@@ -48,8 +48,12 @@ export default class Login extends CreateElement {
         firstName: this.firstField.getValue(),
         surName: this.secondField.getValue(),
       });
-      this.removeNode();
-      this.app.startPage();
+      this.addClass('login__out');
+      this.button.removeEventListener('click', this.accessCheck);
+      setTimeout(() => {
+        this.removeNode();
+        this.app.startPage();
+      }, 900);
     }
   };
 }

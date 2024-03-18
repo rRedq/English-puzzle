@@ -7,6 +7,7 @@
   background-size: cover;
   background-position: center center;
   display: flex;
+  @include fadeIn(1s);
 
   &__form {
     width: 420px;
@@ -37,6 +38,9 @@
 
   &__btn {
     @extend %btn;
+  }
+  &__out {
+    @include fadeOut(1s);
   }
   .success {
     color: var(--green);
