@@ -10,7 +10,7 @@
   @include fadeIn(1s);
 
   &__form {
-    width: 420px;
+    min-width: 420px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,9 +23,12 @@
     height: 110px;
     display: flex;
     flex-direction: column;
+    // justify-content: center;
+    align-items: center;
   }
 
   &__input {
+    width: 320px;
     border-radius: 10px;
     font-size: 25px;
     padding: 5px;
@@ -38,6 +41,9 @@
 
   &__btn {
     @extend %btn;
+    &:disabled {
+      background-color: var(--middle-3);
+    }
   }
   &__out {
     @include fadeOut(1s);

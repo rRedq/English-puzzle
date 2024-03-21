@@ -11,8 +11,6 @@ import Result from './components/result/result';
 export default class App extends CreateElement {
   private game: Game | undefined;
 
-  private login = new Login(this);
-
   constructor() {
     super({ tag: 'div', className: 'app' });
     document.body.append(this.getNode());
@@ -23,7 +21,7 @@ export default class App extends CreateElement {
     if (getStorage<StorageAccess>('access')) {
       this.startPage();
     } else {
-      this.elementAppend(this.login.createLogin());
+      this.elementAppend(new Login(this));
     }
   }
 

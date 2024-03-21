@@ -1,6 +1,7 @@
 import CreateElement from '../create-element';
 import { label, input, span } from '../../utils/tag-functions';
 import { isNull } from '../../utils/functions';
+import type Login from './login';
 
 export default class LoginInput extends CreateElement {
   private labelName: CreateElement;
@@ -17,31 +18,43 @@ export default class LoginInput extends CreateElement {
 
   private value: string = '';
 
-  constructor(text: string, regex: RegExp, errorMsg: string) {
+  private loginFrom: Login;
+
+  constructor(login: Login, text: string, regex: RegExp, errorMsg: string) {
     super({ tag: 'div', className: 'login__field' });
     this.regex = regex;
     this.errorMsg = errorMsg;
+    this.loginFrom = login;
     this.labelName = label({ className: 'login__label', textContent: `${text}` });
-  }
-
-  public createInput(): void {
     this.appendChildren([this.labelName, this.inputName, this.spanName]);
-    this.inputName.addEventListener('keyup', this.handler.bind(this));
+    this.inputName.addEventListener('keyup', this.clickInput);
   }
 
-  private handler(e: Event): void {
+  private clickInput = (e: Event): void => {
+    e.preventDefault();
     const target = isNull(e.target as HTMLInputElement);
     this.value = target.value;
-    const str = this.regex.test(target.value) ? 'Everything all right' : `${this.errorMsg}`;
-    if (this.regex.test(target.value)) {
-      this.spanName.removeClass('fail').addClass('success');
-      this.access = true;
-    } else {
+    this.loginFrom.checkInputs();
+    const englishTextRegEx = /^[a-zA-Z\s-]*$/;
+    const firstletterRegEx = /^[А-ЯA-Z][а-яА-Яa-zA-Z\s-]*$/;
+    let message: string;
+    if (!firstletterRegEx.test(this.value)) {
+      message = 'First letter must be in uppercase';
+      this.spanName.addClass('fail');
+    } else if (!englishTextRegEx.test(this.value)) {
+      this.spanName.addClass('fail');
+      message = 'Text must be in English';
+    } else if (!this.regex.test(this.value)) {
       this.spanName.removeClass('success').addClass('fail');
       this.access = false;
+      message = `${this.errorMsg}`;
+    } else {
+      this.spanName.removeClass('fail').addClass('success');
+      this.access = true;
+      message = 'Everything all right';
     }
-    this.spanName.textContent(str);
-  }
+    this.spanName.textContent(message);
+  };
 
   public getAccess(): boolean {
     return this.access;

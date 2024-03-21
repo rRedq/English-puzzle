@@ -7,13 +7,9 @@ import './login.scss';
 import { StorageAccess } from '../../types/interfaces';
 
 export default class Login extends CreateElement {
-  private firstField: LoginInput = new LoginInput(
-    'First name',
-    /^(?=.{3,60}$)[A-Z][\\-a-zA-z]+$/,
-    'incorrect First name'
-  );
+  private firstField: LoginInput;
 
-  private secondField: LoginInput = new LoginInput('Surname', /^(?=.{4,60}$)[A-Z][\\-a-zA-z]+$/, 'incorrect Surname');
+  private secondField: LoginInput;
 
   private button: CreateElement = input({
     className: 'login__btn',
@@ -28,17 +24,28 @@ export default class Login extends CreateElement {
   constructor(elem: App) {
     super({ tag: 'div', className: 'login' });
     this.app = elem;
-  }
-
-  public createLogin(): CreateElement {
-    this.firstField = new LoginInput('First name', /^(?=.{3,60}$)[A-Z][\\-a-zA-z]+$/, 'incorrect First name');
-    this.secondField = new LoginInput('Surname', /^(?=.{4,60}$)[A-Z][\\-a-zA-z]+$/, 'incorrect Surname');
-    this.firstField.createInput();
-    this.secondField.createInput();
+    this.firstField = new LoginInput(
+      this,
+      'First name',
+      /^(?=.{3,60}$)[A-Z][\\-a-zA-z]+$/,
+      'The name must consist of at least 3 letters'
+    );
+    this.secondField = new LoginInput(
+      this,
+      'Surname',
+      /^(?=.{4,60}$)[A-Z][\\-a-zA-z]+$/,
+      'The name must consist of at least 4 letters'
+    );
     this.elementAppend(this.form);
     this.form.appendChildren([this.firstField, this.secondField, this.button]);
     this.button.addEventListener('click', this.accessCheck);
-    return this;
+    (this.button.getNode() as HTMLInputElement).disabled = true;
+  }
+
+  public checkInputs(): void {
+    if (this.firstField.getValue() && this.secondField.getValue()) {
+      (this.button.getNode() as HTMLInputElement).disabled = false;
+    }
   }
 
   private accessCheck = (e: Event): void => {
