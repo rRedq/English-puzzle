@@ -1,7 +1,7 @@
 import CreateElement from '../create-element';
 import PuzzleItem from '../puzzle-item/puzzle-item';
 import type Game from './game';
-import { getNewPosition, isNull } from '../../utils/functions';
+import { getNewPosition } from '../../utils/functions';
 import { div } from '../../utils/tag-functions';
 import { CanvasCover } from '../../types/types';
 
@@ -33,23 +33,35 @@ export default class ActiveGame extends CreateElement {
       this.puzzle.elementAppend(new PuzzleItem(this, this.puzzle, item.canvas, item.width, item.position, item.word));
     });
 
-    this.addEventListener('dragover', (e: Event) => {
-      e.preventDefault();
-      const dragging = document.querySelector('.dragging');
-      const applyAfter = getNewPosition(this.getNode(), (e as MouseEvent).clientX);
-
-      const cover = div({ className: 'game__cover' });
-      const isParent = dragging?.parentNode === this.puzzle.getNode();
-
-      if (applyAfter) {
-        if (isParent) isNull(dragging).insertAdjacentElement('beforebegin', cover.getNode());
-        applyAfter.insertAdjacentElement('afterend', isNull(dragging));
-      } else {
-        if (isParent) isNull(dragging).insertAdjacentElement('beforebegin', cover.getNode());
-        this.getNode().prepend(isNull(dragging));
-      }
-    });
+    this.addEventListener('dragover', this.dragOver);
+    this.addEventListener('touchmove', this.dragOver);
   }
+
+  private dragOver = (e: Event | TouchEvent) => {
+    e.preventDefault();
+
+    const dragging = PuzzleItem.returnDraging()?.getNode();
+    if (!dragging) return;
+
+    let applyAfter;
+    if (e instanceof TouchEvent) {
+      const posX = e.touches[0].clientX;
+      applyAfter = getNewPosition(this.getNode(), posX);
+    } else if (e instanceof MouseEvent) {
+      applyAfter = getNewPosition(this.getNode(), e.clientX);
+    }
+
+    const cover = div({ className: 'game__cover' });
+    const isParent = dragging?.parentNode === this.puzzle.getNode();
+
+    if (applyAfter) {
+      if (isParent) dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      applyAfter.insertAdjacentElement('afterend', dragging);
+    } else {
+      if (isParent) dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      this.getNode().prepend(dragging);
+    }
+  };
 
   public rowItemLengthCheck(): void {
     const rowCheck = this.getChildren().length === this.currentString.split(' ').length;

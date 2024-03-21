@@ -15,6 +15,8 @@ export default class PuzzleItem extends CreateElement {
 
   private canvas: CreateElement;
 
+  private dragging = false;
+
   constructor(
     elem: ActiveGame,
     parent: CreateElement,
@@ -47,17 +49,33 @@ export default class PuzzleItem extends CreateElement {
     this.setListeners();
   }
 
+  public static returnDraging(): PuzzleItem | undefined {
+    let drag;
+    for (let i = 0; i < PuzzleItem.nodes.length; i += 1) {
+      if (PuzzleItem.nodes[i].dragging) drag = PuzzleItem.nodes[i];
+    }
+    return drag;
+  }
+
   private setListeners(): void {
-    this.addEventListener('dragstart', () => {
-      this.addClass('dragging');
-    });
-    this.addEventListener('dragend', () => {
-      this.removeClass('dragging');
-      this.childRoot.rowItemLengthCheck();
-      PuzzleItem.clearClasses();
-    });
+    this.addEventListener('dragstart', this.dragStart);
+    this.addEventListener('touchstart', this.dragStart);
+    this.addEventListener('dragend', this.dragEnd);
+    this.addEventListener('touchend', this.dragEnd);
     this.addEventListener('click', this.clickItem);
   }
+
+  private dragStart = (): void => {
+    this.addClass('dragging');
+    this.dragging = true;
+  };
+
+  private dragEnd = (): void => {
+    this.removeClass('dragging');
+    this.childRoot.rowItemLengthCheck();
+    PuzzleItem.clearClasses();
+    this.dragging = false;
+  };
 
   private clickItem = (): void => {
     PuzzleItem.clearClasses();

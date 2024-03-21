@@ -91,7 +91,7 @@ function getNewPosition(column: HTMLElement, posX: number) {
 
   for (let i = 0; i < puzzles.length; i += 1) {
     const box = puzzles[i].getBoundingClientRect();
-    const boxCenterX = box.x + box.height / 2;
+    const boxCenterX = box.x + box.width / 2;
     if (posX >= boxCenterX) result = puzzles[i];
   }
 
