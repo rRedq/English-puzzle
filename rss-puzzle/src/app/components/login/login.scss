@@ -1,7 +1,7 @@
 @import '/src/app/utils/common-styles.scss';
 
 .login {
-  height: 100%;
+  min-height: 100vh;
   background-image: url(../../assets/images/login-back.jpg);
   background-repeat: no-repeat;
   background-size: cover;

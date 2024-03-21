@@ -49,7 +49,7 @@ function createCanvas(
       if (!(words[j] === words[words.length - 1])) width -= puzzleGap;
 
       let position: Position;
-      if (words[j] === words[0]) position = 'first';
+      if (j === 0) position = 'first';
       else if (words[j] === words[words.length - 1]) position = 'last';
       else position = 'mid';
       sentencesList[i].push({ width, canvas: partCanvas, word: words[j], position });

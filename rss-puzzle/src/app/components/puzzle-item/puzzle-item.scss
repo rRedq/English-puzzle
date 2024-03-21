@@ -66,3 +66,10 @@
   width: 100%;
   mask: radial-gradient(calc(var(--radius) + var(--gap)) at calc(0% - var(--gap)) 50%, #0000 100%, #000);
 }
+@media screen and (width < 1000px) {
+  .mid,
+  .first,
+  .last {
+    font-size: 14px;
+  }
+}
