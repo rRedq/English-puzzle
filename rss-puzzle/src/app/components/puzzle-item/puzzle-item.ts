@@ -35,8 +35,7 @@ export default class PuzzleItem extends CreateElement {
     this.canvas.addClass('canvas');
     const puzzle = div({ className: `${position}`, textContent: word }, canvas);
     this.elementAppend(puzzle);
-    const pers = (width / 900) * 100;
-    this.setProperty('width', `${pers}%`);
+    this.setProperty('width', `${width}%`);
     this.initItem();
   }
 

@@ -210,14 +210,13 @@ export default class Game extends CreateElement {
     isNull(this.activeRow).removeRow();
     this.hints.afterRound('check');
     const recordRow = div({ className: 'game__puzzle-field' });
-    const items = this.allRoundImages[this.currentRow];
+    const items: CanvasCover[] = this.allRoundImages[this.currentRow];
     items.forEach((item) => {
       const canv = item.canvas.getNode();
       canv.style.visibility = 'visible';
       const puzzle = div({ className: item.position, textContent: item.word }, item.canvas);
       const cover = div({ className: 'game__item content' }, puzzle);
-      const pers = (item.width / 900) * 100;
-      cover.setProperty('width', `${pers}%`);
+      cover.setProperty('width', `${item.width}%`);
       recordRow.elementAppend(cover);
     });
     this.mainFild.elementAppend(recordRow);

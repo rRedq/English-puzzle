@@ -52,7 +52,8 @@ function createCanvas(
       if (j === 0) position = 'first';
       else if (words[j] === words[words.length - 1]) position = 'last';
       else position = 'mid';
-      sentencesList[i].push({ width, canvas: partCanvas, word: words[j], position });
+      const pers = (width / 900) * 100;
+      sentencesList[i].push({ width: pers, canvas: partCanvas, word: words[j], position });
       maxWidth += width;
     }
     maxHeight += height;
