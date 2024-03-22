@@ -1,5 +1,6 @@
 import type App from '../../app';
-import { DataJson, IsKnownWords, CurrentWord } from '../../types/interfaces';
+import { DataJson, IsKnownWords, WordPosition } from '../../types/interfaces';
+import { fadeOutAnimation, gitUrl } from '../../utils/constants';
 import { getStorage, isNull } from '../../utils/functions';
 import { button, div, p, span } from '../../utils/tag-functions';
 import CreateElement from '../create-element';
@@ -13,7 +14,7 @@ export default class Result extends CreateElement {
 
   private result: IsKnownWords;
 
-  private countinueBtn = button({
+  private continueBtn = button({
     className: 'result__continue',
     textContent: 'Continue',
   });
@@ -27,12 +28,12 @@ export default class Result extends CreateElement {
     this.elementAppend(this.stats);
     this.result = isNull(getStorage<IsKnownWords>('result'));
     this.createResults();
-    this.countinueBtn.addEventListener('click', this.countinueClick);
+    this.continueBtn.addEventListener('click', this.countinueClick);
   }
 
   private createResults() {
     const source = this.data.rounds[this.result.round].levelData;
-    const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/images/${source.cutSrc}`;
+    const link = `${gitUrl}/images/${source.cutSrc}`;
     const art = div({ className: 'result__art' });
     art.getNode().style.backgroundImage = `url(${link})`;
     const author = div({
@@ -46,7 +47,7 @@ export default class Result extends CreateElement {
     know.elementAppend(div({ className: 'result__sucess', textContent: 'I know' }));
     unknow.elementAppend(span({ className: 'result__fail', textContent: "I don't know" }));
 
-    this.stats.appendChildren([art, author, know, unknow, this.countinueBtn]);
+    this.stats.appendChildren([art, author, know, unknow, this.continueBtn]);
 
     this.createContainer(this.result.known, know);
     this.createContainer(this.result.unknown, unknow);
@@ -65,11 +66,11 @@ export default class Result extends CreateElement {
 
   private countinueClick = () => {
     this.addClass('result__fade-out');
-    this.countinueBtn.removeEventListener('click', this.countinueClick);
+    this.continueBtn.removeEventListener('click', this.countinueClick);
     setTimeout(() => {
       this.removeNode();
-      const game = getStorage<CurrentWord>('lastGame');
+      const game = getStorage<WordPosition>('lastGame');
       this.app.startGame(game);
-    }, 900);
+    }, fadeOutAnimation);
   };
 }

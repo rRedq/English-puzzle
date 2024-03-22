@@ -5,6 +5,7 @@ import { setStorage } from '../../utils/functions';
 import type App from '../../app';
 import './login.scss';
 import { StorageAccess } from '../../types/interfaces';
+import { fadeOutAnimation } from '../../utils/constants';
 
 export default class Login extends CreateElement {
   private firstField: LoginInput;
@@ -60,7 +61,7 @@ export default class Login extends CreateElement {
       setTimeout(() => {
         this.removeNode();
         this.app.startPage();
-      }, 900);
+      }, fadeOutAnimation);
     }
   };
 }

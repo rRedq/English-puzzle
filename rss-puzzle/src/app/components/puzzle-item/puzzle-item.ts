@@ -41,7 +41,9 @@ export default class PuzzleItem extends CreateElement {
 
   private initItem(): void {
     const statuses = getStorage<StorageHints>('hints');
-    if (statuses?.isBackground === false) this.canvas.getNode().style.visibility = 'hidden';
+    if (!statuses?.isBackground) {
+      this.canvas.getNode().style.visibility = 'hidden';
+    }
 
     PuzzleItem.nodes.push(this);
     this.setDragable();
@@ -49,9 +51,11 @@ export default class PuzzleItem extends CreateElement {
   }
 
   public static returnDraging(): PuzzleItem | undefined {
-    let drag;
+    let drag: PuzzleItem | undefined;
     for (let i = 0; i < PuzzleItem.nodes.length; i += 1) {
-      if (PuzzleItem.nodes[i].dragging) drag = PuzzleItem.nodes[i];
+      if (PuzzleItem.nodes[i].dragging) {
+        drag = PuzzleItem.nodes[i];
+      }
     }
     return drag;
   }

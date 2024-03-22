@@ -3,7 +3,8 @@ import CreateElement from '../create-element';
 import { button, div, h2, p } from '../../utils/tag-functions';
 import './start-page.scss';
 import { getStorage } from '../../utils/functions';
-import { CurrentWord, type StorageAccess } from '../../types/interfaces';
+import { WordPosition, type StorageAccess } from '../../types/interfaces';
+import { fadeOutAnimation } from '../../utils/constants';
 
 export default class StartPage extends CreateElement {
   private app: App;
@@ -39,9 +40,12 @@ export default class StartPage extends CreateElement {
 
     setTimeout(() => {
       this.removeNode();
-      const lastGame = getStorage<CurrentWord>('lastGame');
-      if (lastGame) this.app.startGame(lastGame, true);
-      else this.app.startGame(lastGame);
-    }, 900);
+      const lastGame = getStorage<WordPosition>('lastGame');
+      if (lastGame) {
+        this.app.startGame(lastGame, true);
+      } else {
+        this.app.startGame(lastGame);
+      }
+    }, fadeOutAnimation);
   };
 }

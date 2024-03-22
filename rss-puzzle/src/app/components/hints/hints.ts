@@ -1,7 +1,6 @@
 import './hints.scss';
 import CreateElement from '../create-element';
 import { button, div } from '../../utils/tag-functions';
-import type { HintFields } from '../../types/types';
 import { getStorage, setStorage } from '../../utils/functions';
 import { type StorageHints } from '../../types/interfaces';
 import PuzzleItem from '../puzzle-item/puzzle-item';
@@ -10,25 +9,29 @@ import Pronounce from '../pronounce/pronounce';
 export default class Hints extends CreateElement {
   private sentence: string = '';
 
-  private soundPath: string | undefined;
+  private cover: CreateElement = div({ className: 'hints__cover' });
 
-  private cover: CreateElement = Hints.fields().cover;
+  private textBtn: CreateElement = button({
+    className: 'hints__text-btn hints__btn',
+  });
 
-  private textBtn: CreateElement = Hints.fields().textBtn;
+  private soundBtn: CreateElement = button({
+    className: 'hints__sound-btn hints__btn',
+  });
 
-  private soundBtn: CreateElement = Hints.fields().soundBtn;
+  private onSound: CreateElement = div({ className: 'hints__audio' });
 
-  private onSound: CreateElement = Hints.fields().onSound;
+  private textHint: CreateElement = div({ className: 'hints__text' });
 
-  private textHint: CreateElement = Hints.fields().textHint;
+  private backgroundBtn: CreateElement = button({
+    className: 'hints__background-btn hints__btn',
+  });
 
-  private backgroundBtn: CreateElement = Hints.fields().backgroundBtn;
+  private isText = true;
 
-  private isText: boolean = true;
+  private isSound = true;
 
-  private isSound: boolean = true;
-
-  private isBackground: boolean = true;
+  private isBackground = true;
 
   constructor() {
     super({ tag: 'div', className: 'hints' });
@@ -44,7 +47,6 @@ export default class Hints extends CreateElement {
 
   public createHints(sentence: string, path: string) {
     this.sentence = sentence;
-    this.soundPath = path;
     this.cover.removeChildren();
     this.textHint.textContent(this.sentence);
     this.onSound.elementAppend(new Pronounce(path));
@@ -55,17 +57,20 @@ export default class Hints extends CreateElement {
     this.backgroundBtn.toggleClass('disable');
     this.isBackground = !this.isBackground;
     setStorage<StorageHints>('hints', { isText: this.isText, isSound: this.isSound, isBackground: this.isBackground });
-    this.backgroundVisability();
+    this.backgroundVisibility();
   };
 
-  private backgroundVisability() {
-    const canvases = PuzzleItem.getRow();
+  private backgroundVisibility() {
+    const canvases: CreateElement[] = PuzzleItem.getRow();
 
     canvases.forEach((canvas) => {
       const elem = canvas.getNode();
 
-      if (this.isBackground) elem.style.visibility = 'visible';
-      else elem.style.visibility = 'hidden';
+      if (this.isBackground) {
+        elem.style.visibility = 'visible';
+      } else {
+        elem.style.visibility = 'hidden';
+      }
     });
   }
 
@@ -96,34 +101,29 @@ export default class Hints extends CreateElement {
       this.isBackground = statuses.isBackground;
     }
     this.showHints(this.isText, this.isSound);
-    this.backgroundVisability();
-    if (this.isText) this.textBtn.removeClass('disable');
-    else this.textBtn.addClass('disable');
-    if (this.isSound) this.soundBtn.removeClass('disable');
-    else this.soundBtn.addClass('disable');
-    if (this.isBackground) this.backgroundBtn.removeClass('disable');
-    else this.backgroundBtn.addClass('disable');
+    this.backgroundVisibility();
+    if (this.isText) {
+      this.textBtn.removeClass('disable');
+    } else {
+      this.textBtn.addClass('disable');
+    }
+    if (this.isSound) {
+      this.soundBtn.removeClass('disable');
+    } else {
+      this.soundBtn.addClass('disable');
+    }
+    if (this.isBackground) {
+      this.backgroundBtn.removeClass('disable');
+    } else {
+      this.backgroundBtn.addClass('disable');
+    }
   }
 
   public afterRound(state: 'check' | 'countinue'): void {
-    if (state === 'check') this.showHints(true, true);
-    else this.showHints(this.isText, this.isSound);
-  }
-
-  private static fields(): HintFields<CreateElement> {
-    return {
-      cover: div({ className: 'hints__cover' }),
-      textBtn: button({
-        className: 'hints__text-btn hints__btn',
-      }),
-      onSound: div({ className: 'hints__audio' }),
-      soundBtn: button({
-        className: 'hints__sound-btn hints__btn',
-      }),
-      textHint: div({ className: 'hints__text' }),
-      backgroundBtn: button({
-        className: 'hints__background-btn hints__btn',
-      }),
-    };
+    if (state === 'check') {
+      this.showHints(true, true);
+    } else {
+      this.showHints(this.isText, this.isSound);
+    }
   }
 }

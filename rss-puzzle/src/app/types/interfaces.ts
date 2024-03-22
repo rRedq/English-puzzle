@@ -44,17 +44,17 @@ interface DataJson {
   roundsCount: number;
 }
 
-interface CurrentWord {
+interface WordPosition {
   level: LevelsData;
   round: number;
   word: number;
 }
 
-interface StorageWords extends CurrentWord {
+interface StorageWords extends WordPosition {
   isKnown: 'know' | 'unknown';
 }
 
-interface IsKnownWords extends Omit<CurrentWord, 'word'> {
+interface IsKnownWords extends Omit<WordPosition, 'word'> {
   known: number[];
   unknown: number[];
 }
@@ -80,11 +80,12 @@ export {
   TagsProps,
   ElementProps,
   DataJson,
-  CurrentWord,
+  WordPosition,
   StorageAccess,
   StorageHints,
   Word,
   StorageProgress,
   StorageWords,
   IsKnownWords,
+  Round,
 };

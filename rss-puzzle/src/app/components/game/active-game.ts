@@ -26,7 +26,7 @@ export default class ActiveGame extends CreateElement {
 
   private createFields(): void {
     this.puzzle.getNode().replaceChildren();
-    const canvases = [...this.canvases];
+    const canvases: CanvasCover[] = [...this.canvases];
     const sortedArray = canvases.sort(() => Math.random() - 0.5);
 
     sortedArray.forEach((item: CanvasCover) => {
@@ -40,10 +40,10 @@ export default class ActiveGame extends CreateElement {
   private dragOver = (e: Event | TouchEvent) => {
     e.preventDefault();
 
-    const dragging = PuzzleItem.returnDraging()?.getNode();
+    const dragging: HTMLElement | undefined = PuzzleItem.returnDraging()?.getNode();
     if (!dragging) return;
 
-    let applyAfter;
+    let applyAfter: Element | undefined;
     if (e instanceof TouchEvent) {
       const posX = e.touches[0].clientX;
       applyAfter = getNewPosition(this.getNode(), posX);
@@ -52,13 +52,17 @@ export default class ActiveGame extends CreateElement {
     }
 
     const cover = div({ className: 'game__cover' });
-    const isParent = dragging?.parentNode === this.puzzle.getNode();
+    const isParent: boolean = dragging?.parentNode === this.puzzle.getNode();
 
     if (applyAfter) {
-      if (isParent) dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      if (isParent) {
+        dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      }
       applyAfter.insertAdjacentElement('afterend', dragging);
     } else {
-      if (isParent) dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      if (isParent) {
+        dragging.insertAdjacentElement('beforebegin', cover.getNode());
+      }
       this.getNode().prepend(dragging);
     }
   };

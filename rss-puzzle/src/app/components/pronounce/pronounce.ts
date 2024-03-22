@@ -1,3 +1,4 @@
+import { gitUrl } from '../../utils/constants';
 import CreateElement from '../create-element';
 import './pronounce.scss';
 
@@ -12,7 +13,7 @@ export default class Pronounce extends CreateElement {
   }
 
   private onSoundHint = () => {
-    const link = `https://github.com/rolling-scopes-school/rss-puzzle-data/raw/main/${this.path}`;
+    const link = `${gitUrl}/${this.path}`;
     const audio = new Audio(link);
     audio.volume = 0.1;
 

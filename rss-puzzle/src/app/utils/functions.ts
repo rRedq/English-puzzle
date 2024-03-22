@@ -1,6 +1,7 @@
 import StorageStatus from '../types/enum';
 import type { DataJson } from '../types/interfaces';
 import type { LevelsData } from '../types/types';
+import { gitRawUrl } from './constants';
 
 function isNull<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -9,12 +10,14 @@ function isNull<T>(value: T): NonNullable<T> {
   return value;
 }
 function checkId(id: string): void {
-  if (!Object.values(StorageStatus)[Object.keys(StorageStatus).indexOf(id)]) throw Error(`Unexpected id: ${id}`);
+  if (!Object.values(StorageStatus)[Object.keys(StorageStatus).indexOf(id)]) {
+    throw Error(`Unexpected id: ${id}`);
+  }
 }
 
 function setStorage<T>(id: string, value: T): void {
   checkId(id);
-  let obj;
+  let obj: Map<string, T>;
   const prevObj = localStorage.getItem('rredq');
   if (prevObj) {
     obj = new Map<string, T>(JSON.parse(prevObj));
@@ -43,21 +46,25 @@ function deleteStorage() {
 
 function getProgressStorage(level: LevelsData): number[] {
   const prevObj = localStorage.getItem('rredq-progress');
-  if (!prevObj) return [];
+  if (!prevObj) {
+    return [];
+  }
 
   const obj = new Map<string, Map<LevelsData, number[]>>(JSON.parse(prevObj));
   const newObj = new Map<LevelsData, number[]>(obj.get('progress'));
 
   let result: number[] = [];
   const value = newObj.get(level);
-  if (value) result = value;
+  if (value) {
+    result = value;
+  }
 
   return result;
 }
 
 function setProgressStorage(level: LevelsData, round: number[]): void {
   const prevObj = localStorage.getItem('rredq-progress');
-  let obj;
+  let obj: Map<string, Map<LevelsData, number[]>>;
 
   if (prevObj) {
     obj = new Map<string, Map<LevelsData, number[]>>(JSON.parse(prevObj));
@@ -86,11 +93,11 @@ function setProgressStorage(level: LevelsData, round: number[]): void {
 }
 
 function getNewPosition(column: HTMLElement, posX: number) {
-  const puzzles = column.querySelectorAll('.game__item:not(.dragging)');
+  const puzzles: NodeListOf<Element> = column.querySelectorAll('.game__item:not(.dragging)');
   let result: Element | undefined;
 
   for (let i = 0; i < puzzles.length; i += 1) {
-    const box = puzzles[i].getBoundingClientRect();
+    const box: DOMRect = puzzles[i].getBoundingClientRect();
     const boxCenterX = box.x + box.width / 2;
     if (posX >= boxCenterX) result = puzzles[i];
   }
@@ -99,9 +106,8 @@ function getNewPosition(column: HTMLElement, posX: number) {
 }
 
 async function getData(level: LevelsData): Promise<DataJson> {
-  const result = await fetch(
-    `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel${level}.json`
-  )
+  const link = `${gitRawUrl}/data/wordCollectionLevel${level}.json`;
+  const result = await fetch(link)
     .then((response) => response.json())
     .then((json) => json)
     .catch((err) => new Error(err));

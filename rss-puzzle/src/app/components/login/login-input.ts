@@ -10,7 +10,7 @@ export default class LoginInput extends CreateElement {
 
   private spanName: CreateElement = span({ className: 'login__span' });
 
-  private access: boolean = false;
+  private access = false;
 
   private regex: RegExp;
 
@@ -35,8 +35,8 @@ export default class LoginInput extends CreateElement {
     const target = isNull(e.target as HTMLInputElement);
     this.value = target.value;
     this.loginFrom.checkInputs();
-    const englishTextRegEx = /^[a-zA-Z\s-]*$/;
-    const firstletterRegEx = /^[А-ЯA-Z][а-яА-Яa-zA-Z\s-]*$/;
+    const englishTextRegEx: RegExp = /^[a-zA-Z\s-]*$/;
+    const firstletterRegEx: RegExp = /^[А-ЯA-Z][а-яА-Яa-zA-Z\s-]*$/;
     let message: string;
     if (!firstletterRegEx.test(this.value)) {
       message = 'First letter must be in uppercase';

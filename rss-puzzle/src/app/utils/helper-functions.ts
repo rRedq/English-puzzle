@@ -8,8 +8,11 @@ function createList(parentNode: CreateElement, values: number, title: 'Level' | 
 
   while (index < values + 1) {
     const value = option({ className: 'level__option', textContent: `${index}`, value: `${index}` });
-    if (marked && marked.includes(index - 1) && title === 'Round') value.addClass('level__option-marked');
-    else if (marked && marked.includes(index) && title === 'Level') value.addClass('level__option-marked');
+    if (marked && marked.includes(index - 1) && title === 'Round') {
+      value.addClass('level__option-marked');
+    } else if (marked && marked.includes(index) && title === 'Level') {
+      value.addClass('level__option-marked');
+    }
     parentNode.elementAppend(value);
     index += 1;
   }
@@ -24,8 +27,10 @@ function createContainer(
   level?: number[]
 ): void {
   createList(selectList, length, title, level);
-  const list = selectList;
-  if (selected) (list.getNode() as HTMLSelectElement).value = selected;
+  const list: CreateElement = selectList;
+  if (selected) {
+    (list.getNode() as HTMLSelectElement).value = selected;
+  }
   const text = p({ className: 'level__text', textContent: `${title}` });
   const cover = div({ className: 'level__select-cover' }, selectList);
   const container = div({ className: 'level__container' }, text, cover);

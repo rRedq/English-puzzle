@@ -11,7 +11,9 @@ export default class CreateElement<T extends HTMLElement = HTMLElement> {
     const node = document.createElement(params.tag) as T;
     Object.assign(node, params);
     this.node = node;
-    if (children) this.appendChildren(children);
+    if (children) {
+      this.appendChildren(children);
+    }
   }
 
   public getNode() {

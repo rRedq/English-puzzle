@@ -13,15 +13,6 @@ type CreateSvg = {
   svg: SVGSVGElement;
 };
 
-type HintFields<T> = {
-  cover: T;
-  textBtn: T;
-  onSound: T;
-  soundBtn: T;
-  textHint: T;
-  backgroundBtn: T;
-};
-
 type LevelsData = 1 | 2 | 3 | 4 | 5 | 6;
 
 type StorageKeys = 'result' | 'progress';
@@ -35,4 +26,4 @@ type CanvasCover = {
 
 type Position = 'first' | 'mid' | 'last';
 
-export { ElementOrNull, Paths, CreateSvg, HintFields, LevelsData, StorageKeys, CanvasCover, Position };
+export { ElementOrNull, Paths, CreateSvg, LevelsData, StorageKeys, CanvasCover, Position };
