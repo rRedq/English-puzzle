@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
 const EslingPlugin = require('eslint-webpack-plugin');
-// const CopyPlugin = require('copy-webpack-plugin');
 const prodConfig = require('./webpack.prod.config');
 const devConfig = require('./webpack.dev.config');
 
@@ -43,14 +42,6 @@ const baseConfig = {
     }),
     new CleanWebpackPlugin(),
     new EslingPlugin({ extensions: 'ts' }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     {
-    //       from: path.resolve(__dirname, 'src/images'),
-    //       to: path.resolve(__dirname, 'dist/images'),
-    //     },
-    //   ],
-    // }),
   ],
 };
 
